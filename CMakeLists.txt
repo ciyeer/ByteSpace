@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 
 # 设置项目的版本
-set(TERMNITE_VERSION 1.7)
-project(Termnite VERSION ${TERMNITE_VERSION} LANGUAGES CXX)
+set(BYTESPACE_VERSION 1.7)
+project(ByteSpace VERSION ${BYTESPACE_VERSION} LANGUAGES CXX)
 
 # 设置项目名称（大写）
-set(PROJECT_NAME_CAPITALIZED "Termnite")
+set(PROJECT_NAME_CAPITALIZED "ByteSpace")
 # 设置输出消息的等级为 NOTICE 以隐藏不必要的信息
 set(CMAKE_MESSAGE_LOG_LEVEL NOTICE)
 # 避免重复生成 CMake 状态信息
@@ -17,11 +17,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # 如果定义了 VERSION_SUFIX 且不为空，添加版本后缀
 if (DEFINED VERSION_SUFIX AND NOT "${VERSION_SUFIX}" STREQUAL "")
-    set(TERMNITE_VERSION_SUFIX "-${VERSION_SUFIX}")
+    set(BYTESPACE_VERSION_SUFIX "-${VERSION_SUFIX}")
 endif()
 
 # 设置最终版本号
-set(TERMNITE_VERSION "${PROJECT_VERSION}${TERMNITE_VERSION_SUFIX}")
+set(BYTESPACE_VERSION "${PROJECT_VERSION}${BYTESPACE_VERSION_SUFIX}")
 
 # 获取Git信息
 find_package(Git)
@@ -82,26 +82,26 @@ else()
 endif()
 
 # 设置项目目录路径
-set(Termnite ${CMAKE_CURRENT_SOURCE_DIR})
+set(ByteSpace ${CMAKE_CURRENT_SOURCE_DIR})
 
 # 查找源文件，包括 .cpp, .h, .ui, .qrc 文件
 file(GLOB_RECURSE _source_list LIST_DIRECTORIES false
-    "${Termnite}/*.cpp"
-    "${Termnite}/*.h"
-    "${Termnite}/*.ui"
-    "${Termnite}/*.qrc"
-    "${Termnite}/*.h.in"
+    "${ByteSpace}/*.cpp"
+    "${ByteSpace}/*.h"
+    "${ByteSpace}/*.ui"
+    "${ByteSpace}/*.qrc"
+    "${ByteSpace}/*.h.in"
 )
 
 # 组织源文件结构，按目录组织
-source_group(TREE ${Termnite} FILES ${_source_list})
+source_group(TREE ${ByteSpace} FILES ${_source_list})
 
 # 查找 Qt 的相关模块（Widgets, Network）
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network SerialPort Concurrent)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network SerialPort Concurrent)
 
 # 递归查找源文件，包括 .cpp, .h, .ui, 和 .qrc 文件
-file(GLOB_RECURSE TERMNITE_SRCS
+file(GLOB_RECURSE BYTESPACE_SRCS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.ui"
@@ -110,18 +110,18 @@ file(GLOB_RECURSE TERMNITE_SRCS
 )
 
 # 将 OnlineUpdate 库的源文件加入到最终构建的目标中
-list(APPEND TERMNITE_SRCS ${ONLINEUPDATE_SRCS})
+list(APPEND BYTESPACE_SRCS ${ONLINEUPDATE_SRCS})
 
 # 根据 Qt 的版本，使用不同的方式添加可执行文件
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_add_executable(Termnite MANUAL_FINALIZATION ${TERMNITE_SRCS}
+    qt_add_executable(ByteSpace MANUAL_FINALIZATION ${BYTESPACE_SRCS}
         src/framework/settingsui/systempage.h src/framework/settingsui/systempage.cpp src/framework/settingsui/systempage.ui
         src/framework/settingsui/accountpage.h src/framework/settingsui/accountpage.cpp src/framework/settingsui/accountpage.ui
         src/framework/settingsui/appearancepage.h src/framework/settingsui/appearancepage.cpp src/framework/settingsui/appearancepage.ui
         src/framework/settingsui/helppage.h src/framework/settingsui/helppage.cpp src/framework/settingsui/helppage.ui
         src/framework/settingsui/aboutpage.h src/framework/settingsui/aboutpage.cpp src/framework/settingsui/aboutpage.ui)
 else()
-    add_executable(Termnite ${TERMNITE_SRCS})
+    add_executable(ByteSpace ${BYTESPACE_SRCS})
 endif()
 
 # 封装自定义控件，确保控件路径正确
@@ -132,7 +132,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # 链接 Qt 库（Widgets, Network, SerialPort, Concurrent）
-target_link_libraries(Termnite
+target_link_libraries(ByteSpace
     PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Network
@@ -141,7 +141,7 @@ target_link_libraries(Termnite
 )
 
 # 设置目标属性，如 MacOS 和 Windows 平台的可执行文件相关选项
-set_target_properties(Termnite PROPERTIES
+set_target_properties(ByteSpace PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -153,7 +153,7 @@ set_target_properties(Termnite PROPERTIES
 include(GNUInstallDirs)
 
 # 安装目标（可执行文件、库、运行时文件）
-install(TARGETS Termnite
+install(TARGETS ByteSpace
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
@@ -161,5 +161,5 @@ install(TARGETS Termnite
 
 # 如果是 Qt6，调用 qt_finalize_executable 完成 Qt 的最终化操作
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(Termnite)
+    qt_finalize_executable(ByteSpace)
 endif()

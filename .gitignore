@@ -1,0 +1,24 @@
+# 忽略编译生成目录
+build/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+*.cmake
+
+# 忽略 IDE/编辑器配置文件
+CMakeLists.txt.user
+.vscode/
+.idea/
+
+# 忽略临时文件/日志
+*.tmp
+*.log
+
+# 保留以下内容（白名单）
+!docs/         # 保留 docs 目录
+!src/          # 保留 src 目录
+!*.h           # 保留所有头文件
+!*.cpp         # 保留所有 C++ 源文件
+!*.md          # 保留所有 Markdown 文档
+!CMakeLists.txt  # 保留 CMake 主配置文件
+!BuildConfig.h.in # 保留 IN 模板文件
