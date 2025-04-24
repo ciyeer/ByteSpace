@@ -120,7 +120,7 @@ ByteSpace/
 │   │   ├── statusbar.cpp                   # 状态栏实现
 │   │   ├── statusbar.h
 │   │   ├── statusbar.ui
-│   │   ├── bytespace.cpp                    # 主窗口实现
+│   │   ├── bytespace.cpp                   # 主窗口实现
 │   │   ├── bytespace.h
 │   │   ├── bytespace.ui
 │   │   ├── titlebar.cpp                    # 标题栏实现
