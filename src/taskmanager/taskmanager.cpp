@@ -75,27 +75,20 @@ void TaskManager::executeTask(std::shared_ptr<BytespaceTask> task) {
     locker.unlock(); // 解锁，避免在执行任务时长时间持有锁
     
     try {
-        LogUtils::logMessage("开始执行任务...", LOG::LOG_DEBUG);
-        if (task->execute()) {
-            LogUtils::logMessage("任务执行成功", LOG::LOG_DEBUG);
-            QMetaObject::invokeMethod(this, "onTaskCompleted", Qt::QueuedConnection);
-        } 
-        else {
-            LogUtils::logMessage("任务执行失败", LOG::LOG_ERROR);
-            QMetaObject::invokeMethod(this, "onTaskFailed", Qt::QueuedConnection,
-                                     Q_ARG(QSerialPort::SerialPortError, QSerialPort::UnknownError));
-        }
+        LogUtils::logMessage(QString("开始执行任务: %1").arg(task->getTaskName()), LOG::LOG_DEBUG);
+        bool result = task->execute();
+        // 让任务自身发出信号，而不是在这里调用
+        // 任务的 execute 方法应该在成功时发出 taskCompleted 信号
+        // 在失败时发出 taskFailed 信号
     } 
     catch (const std::exception& e) {
         QString errorMsg = QString("任务执行异常: %1").arg(e.what());
         LogUtils::logMessage(errorMsg, LOG::LOG_ERROR);
-        QMetaObject::invokeMethod(this, "onTaskFailed", Qt::QueuedConnection,
-                                 Q_ARG(QSerialPort::SerialPortError, QSerialPort::UnknownError));
+        emit task->taskFailed(QSerialPort::UnknownError);
     }
     catch (...) {
         LogUtils::logMessage("任务执行未知异常", LOG::LOG_ERROR);
-        QMetaObject::invokeMethod(this, "onTaskFailed", Qt::QueuedConnection,
-                                 Q_ARG(QSerialPort::SerialPortError, QSerialPort::UnknownError));
+        emit task->taskFailed(QSerialPort::UnknownError);
     }
 }
 

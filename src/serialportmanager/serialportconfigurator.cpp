@@ -1,4 +1,5 @@
 #include "serialportconfigurator.h"
+#include "utils/configmanager.h"
 #include <QSerialPortInfo>
 
 SerialPortConfigurator::SerialPortConfigurator(QObject *parent) : QObject(parent) {
@@ -138,4 +139,127 @@ QSerialPort::FlowControl SerialPortConfigurator::mapFlowControl(int index) const
     case 2: return QSerialPort::SoftwareControl;
     default: return QSerialPort::NoFlowControl;  // 默认值
     }
+}
+
+QSerialPort* SerialPortConfigurator::serialPort() const {
+    return m_serialPort;
+}
+
+void SerialPortConfigurator::setPortName(const QString& portName) {
+    m_serialPort->setPortName(portName);
+}
+
+void SerialPortConfigurator::setBaudRate(int baudRate) {
+    m_serialPort->setBaudRate(baudRate);
+}
+
+void SerialPortConfigurator::setDataBits(QSerialPort::DataBits dataBits) {
+    m_serialPort->setDataBits(dataBits);
+}
+
+void SerialPortConfigurator::setParity(QSerialPort::Parity parity) {
+    m_serialPort->setParity(parity);
+}
+
+void SerialPortConfigurator::setStopBits(QSerialPort::StopBits stopBits) {
+    m_serialPort->setStopBits(stopBits);
+}
+
+void SerialPortConfigurator::setFlowControl(QSerialPort::FlowControl flowControl) {
+    m_serialPort->setFlowControl(flowControl);
+}
+
+QString SerialPortConfigurator::getPortName() const {
+    return m_serialPort->portName();
+}
+
+int SerialPortConfigurator::getBaudRate() const {
+    return m_serialPort->baudRate();
+}
+
+QSerialPort::DataBits SerialPortConfigurator::getDataBits() const {
+    return m_serialPort->dataBits();
+}
+
+QSerialPort::Parity SerialPortConfigurator::getParity() const {
+    return m_serialPort->parity();
+}
+
+QSerialPort::StopBits SerialPortConfigurator::getStopBits() const {
+    return m_serialPort->stopBits();
+}
+
+QSerialPort::FlowControl SerialPortConfigurator::getFlowControl() const {
+    return m_serialPort->flowControl();
+}
+
+QSerialPort::SerialPortError SerialPortConfigurator::getError() const {
+    return m_serialPort->error();
+}
+
+QString SerialPortConfigurator::getAvailablePortsInfo() const {
+    QString info;
+    for (const QSerialPortInfo &port : QSerialPortInfo::availablePorts()) {
+        info += port.portName() + ": " + port.description() + "\n";
+    }
+    return info;
+}
+
+bool SerialPortConfigurator::isValidPort(const QString &portName) const {
+    for (const QSerialPortInfo &info : QSerialPortInfo::availablePorts()) {
+        if (info.portName() == portName) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool SerialPortConfigurator::configureFromSettings() {
+    // 从配置管理器获取串口配置
+    QString portName = ConfigManager::instance().portName();
+    int baudRate = ConfigManager::instance().baudRate();
+    int dataBits = ConfigManager::instance().dataBits();
+    int stopBits = ConfigManager::instance().stopBits();
+    QString parityStr = ConfigManager::instance().parity();
+    
+    // 设置串口参数
+    m_serialPort->setPortName(portName);
+    m_serialPort->setBaudRate(baudRate);
+    
+    // 使用已有的映射函数设置数据位
+    QSerialPort::DataBits dataBitsEnum;
+    switch (dataBits) {
+        case 5: dataBitsEnum = QSerialPort::Data5; break;
+        case 6: dataBitsEnum = QSerialPort::Data6; break;
+        case 7: dataBitsEnum = QSerialPort::Data7; break;
+        default: dataBitsEnum = QSerialPort::Data8; break;
+    }
+    m_serialPort->setDataBits(dataBitsEnum);
+    
+    // 使用已有的映射函数设置停止位
+    QSerialPort::StopBits stopBitsEnum;
+    switch (stopBits) {
+        case 2: stopBitsEnum = QSerialPort::TwoStop; break;
+        case 3: stopBitsEnum = QSerialPort::OneAndHalfStop; break;
+        default: stopBitsEnum = QSerialPort::OneStop; break;
+    }
+    m_serialPort->setStopBits(stopBitsEnum);
+    
+    // 设置校验位
+    QSerialPort::Parity parityEnum = QSerialPort::NoParity;
+    if (parityStr == "Even") {
+        parityEnum = QSerialPort::EvenParity;
+    }
+    else if (parityStr == "Odd") {
+        parityEnum = QSerialPort::OddParity;
+    }
+    else if (parityStr == "Space") {
+        parityEnum = QSerialPort::SpaceParity;
+    }
+    else if (parityStr == "Mark") {
+        parityEnum = QSerialPort::MarkParity;
+    }
+    m_serialPort->setParity(parityEnum);
+    
+    return true;
 }

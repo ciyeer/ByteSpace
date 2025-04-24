@@ -13,26 +13,30 @@ public:
     explicit SerialPortManager(QObject *parent = nullptr);
     ~SerialPortManager();
     
+    // UI 初始化和配置方法 - 委托给 SerialPortConfigurator
     bool initialize(QComboBox *portBox, QComboBox *baudrateBox,
                     QComboBox *databitsBox, QComboBox *parityBox,
                     QComboBox *stopBitsBox, QComboBox *flowControlBox);
 
     void configureSerialPort(QComboBox *comBoxPortName, QComboBox *comBoxBaudRate,
-                              QComboBox *comBoxDataBits, QComboBox *comBoxParity,
-                              QComboBox *comBoxStopBits, QComboBox *comBoxFlowControl);
+                             QComboBox *comBoxDataBits, QComboBox *comBoxParity,
+                             QComboBox *comBoxStopBits, QComboBox *comBoxFlowControl);
 
+    // 串口操作方法 - 委托给 SerialPortOperator
     bool openPort();
     void closePort();
     bool writeData(const QByteArray &data);
     QByteArray readData();
     
+    // 从配置管理器加载配置
     bool configurePort();
 
+    // 状态查询方法
     bool isOpen() const;
     bool isWritable() const;
     bool isReadable() const;
 
-    // 设置串口参数
+    // 设置串口参数 - 委托给 SerialPortConfigurator
     void setPortName(const QString& portName);
     void setBaudRate(int baudRate);
     void setDataBits(QSerialPort::DataBits dataBits);
@@ -40,7 +44,7 @@ public:
     void setStopBits(QSerialPort::StopBits stopBits);
     void setFlowControl(QSerialPort::FlowControl flowControl);
 
-    // 获取串口信息
+    // 获取串口信息 - 委托给 SerialPortConfigurator
     QString getPortName() const;
     int getBaudRate() const;
     QSerialPort::DataBits getDataBits() const;
@@ -70,13 +74,6 @@ private slots:
     void handleReadyRead();
 
 private:
-    QSerialPort* m_serialPort;
-    QString m_portName;
-    int m_baudRate;
-    QSerialPort::DataBits m_dataBits;
-    QSerialPort::Parity m_parity;
-    QSerialPort::StopBits m_stopBits;
-    QSerialPort::FlowControl m_flowControl;
     SerialPortConfigurator m_configurator;
     SerialPortOperator m_operator;
 };

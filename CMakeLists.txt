@@ -114,7 +114,7 @@ list(APPEND BYTESPACE_SRCS ${ONLINEUPDATE_SRCS})
 
 # 根据 Qt 的版本，使用不同的方式添加可执行文件
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_add_executable(ByteSpace MANUAL_FINALIZATION ${BYTESPACE_SRCS})
+    qt_add_executable(ByteS pace MANUAL_FINALIZATION ${BYTESPACE_SRCS})
 else()
     add_executable(ByteSpace ${BYTESPACE_SRCS})
 endif()
