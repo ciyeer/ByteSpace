@@ -139,8 +139,8 @@ ByteSpace/
 │   │   ├── statemanager.cpp                # 状态管理实现
 │   │   └── statemanager.h                  # 状态管理接口
 │   ├── taskmanager/                        # 任务管理模块
-│   │   ├── bytespacetask.cpp                # 基础任务实现
-│   │   ├── bytespacetask.h                  # 基础任务接口
+│   │   ├── bytespacetask.cpp               # 基础任务实现
+│   │   ├── bytespacetask.h                 # 基础任务接口
 │   │   ├── serialporttask.cpp              # 串口任务实现
 │   │   ├── serialporttask.h                # 串口任务接口
 │   │   ├── serialportwritetask.cpp         # 串口写任务实现
