@@ -1,0 +1,43 @@
+#ifndef BYTESPACE_BUILDCONFIG_H
+#define BYTESPACE_BUILDCONFIG_H
+
+// 构建配置头文件
+// 此文件由CMake在构建时生成，包含项目的基本信息和构建时的配置参数
+
+// 项目基本信息
+#define BYTESPACE_NAME "@BYTESPACE_NAME@"  // 项目名称
+
+// 版本信息
+#define BYTESPACE_VERSION_MAJOR "@BYTESPACE_VERSION_MAJOR@"  // 主版本号
+#define BYTESPACE_VERSION_MINOR "@BYTESPACE_VERSION_MINOR@"  // 次版本号
+#define BYTESPACE_VERSION_PATCH "@BYTESPACE_VERSION_PATCH@"  // 补丁版本号
+#define BYTESPACE_VERSION "@BYTESPACE_VERSION@"   // 完整版本号
+#define BYTESPACE_BUILD_NUMBER "@BUILD_NUMBER@"  // 构建编号
+
+// 构建时间戳
+#define BYTESPACE_BUILD_TIMESTAMP "@BUILD_TIMESTAMP@"  // 构建时间
+#define BYTESPACE_GIT_HASH "@GIT_HASH@"  // Git提交哈希值
+#define BYTESPACE_GIT_BRANCH "@GIT_BRANCH@"  // Git分支名称
+
+// 安装路径配置
+#define BYTESPACE_LANG_INSTALL_DIR "@BYTESPACE_LANG_INSTALL_DIR@"  // 语言文件安装目录
+#define BUILD_DIR "@CMAKE_BINARY_DIR@"  // CMake构建目录
+#define SOURCE_DIR "@CMAKE_SOURCE_DIR@"  // 源代码目录
+#define INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"  // 安装前缀
+#define BYTESPACE_INSTALL_PREFIX INSTALL_PREFIX   // 项目安装前缀
+
+// 编译器和构建类型信息
+#define CXX_COMPILER "@CMAKE_CXX_COMPILER@"  // C++编译器路径
+#define BUILD_TYPE "@CMAKE_BUILD_TYPE@"      // 构建类型(Debug/Release)
+
+// 平台相关的条件编译支持
+#cmakedefine BYTESPACE_PLATFORM_WINDOWS  // Windows平台
+#cmakedefine BYTESPACE_PLATFORM_LINUX    // Linux平台
+#cmakedefine BYTESPACE_PLATFORM_MACOS    // macOS平台
+
+// 调试相关配置
+#cmakedefine BYTESPACE_DEBUG_MODE        // 调试模式
+#cmakedefine BYTESPACE_ENABLE_LOGGING    // 启用日志
+#cmakedefine BYTESPACE_ENABLE_PROFILING  // 启用性能分析
+
+#endif  // BYTESPACE_BUILDCONFIG_H
