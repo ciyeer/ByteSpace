@@ -114,12 +114,7 @@ list(APPEND BYTESPACE_SRCS ${ONLINEUPDATE_SRCS})
 
 # 根据 Qt 的版本，使用不同的方式添加可执行文件
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_add_executable(ByteSpace MANUAL_FINALIZATION ${BYTESPACE_SRCS}
-        src/framework/settingsui/systempage.h src/framework/settingsui/systempage.cpp src/framework/settingsui/systempage.ui
-        src/framework/settingsui/accountpage.h src/framework/settingsui/accountpage.cpp src/framework/settingsui/accountpage.ui
-        src/framework/settingsui/appearancepage.h src/framework/settingsui/appearancepage.cpp src/framework/settingsui/appearancepage.ui
-        src/framework/settingsui/helppage.h src/framework/settingsui/helppage.cpp src/framework/settingsui/helppage.ui
-        src/framework/settingsui/aboutpage.h src/framework/settingsui/aboutpage.cpp src/framework/settingsui/aboutpage.ui)
+    qt_add_executable(ByteSpace MANUAL_FINALIZATION ${BYTESPACE_SRCS})
 else()
     add_executable(ByteSpace ${BYTESPACE_SRCS})
 endif()
