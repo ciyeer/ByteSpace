@@ -1,14 +1,8 @@
 # 忽略编译生成目录
 build/
-CMakeCache.txt
-CMakeFiles/
-Makefile
-*.cmake
-
 # 忽略 IDE/编辑器配置文件
 CMakeLists.txt.user
 .vscode/
-.idea/
 
 # 忽略临时文件/日志
 *.tmp
