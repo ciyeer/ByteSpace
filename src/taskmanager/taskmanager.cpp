@@ -4,13 +4,23 @@
 #include <QtConcurrent>
 #include "logmanager/logutils.h"
 #include "utils/errorhandler.h"
+#include "utils/configmanager.h"  // 添加头文件
 
 TaskManager::TaskManager(QObject *parent) 
     : QObject(parent)
     , m_threadPool(new QThreadPool(this))
     , m_pendingTasks(0)
     , m_isProcessing(false) {
-    m_threadPool->setMaxThreadCount(MAXTHREADNUM);
+    // 从配置管理器获取线程池大小
+    m_threadPool->setMaxThreadCount(ConfigManager::instance().maxThreadCount());
+    
+    // 监听配置变化
+    connect(&ConfigManager::instance(), &ConfigManager::configChanged, this, [this](const QString& key) {
+        if (key == "ThreadPool/MaxThreadCount") {
+            m_threadPool->setMaxThreadCount(ConfigManager::instance().maxThreadCount());
+            LogUtils::logMessage(QString("线程池大小已更新为: %1").arg(m_threadPool->maxThreadCount()), LOG::LOG_INFO);
+        }
+    });
 }
 
 TaskManager::~TaskManager() {
@@ -31,7 +41,7 @@ void TaskManager::addTask(std::shared_ptr<BytespaceTask> task) {
     }
     
     // 使用互斥锁保护任务队列
-    QMutexLocker locker(&m_queueMutex);  // 使用新名称
+    QMutexLocker locker(&m_queueMutex);  
     
     // 连接任务信号到管理器
     connect(task.get(), &BytespaceTask::taskCompleted, this, &TaskManager::onTaskCompleted);
@@ -108,7 +118,11 @@ void TaskManager::decrementPendingTasks() {
 }
 
 void TaskManager::setMaxThreads(int nMaxThreads) {
+    // 更新线程池配置
     m_threadPool->setMaxThreadCount(nMaxThreads);
+    
+    // 同时更新配置管理器中的值
+    ConfigManager::instance().setMaxThreadCount(nMaxThreads);
 }
 
 int TaskManager::activeThreadCount() const {

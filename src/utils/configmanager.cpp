@@ -104,6 +104,11 @@ void ConfigManager::initializeDefaultValues() {
     if (!m_settings->contains("Log/MaxSize")) {
         m_settings->setValue("Log/MaxSize", DEFAULT_MAX_LOG_SIZE);
     }
+    
+    // 初始化线程池配置
+    if (!m_settings->contains("ThreadPool/MaxThreadCount")) {
+        m_settings->setValue("ThreadPool/MaxThreadCount", DEFAULT_MAX_THREAD_COUNT);
+    }
 }
 
 QVariant ConfigManager::getCachedValue(const QString& key, const QVariant& defaultValue) const {
@@ -249,6 +254,16 @@ int ConfigManager::maxLogSize() const {
 
 void ConfigManager::setMaxLogSize(int size) {
     setCachedValue("Log/MaxSize", size);
+}
+
+// 线程池配置
+int ConfigManager::maxThreadCount() const {
+    return getCachedValue("ThreadPool/MaxThreadCount", DEFAULT_MAX_THREAD_COUNT).toInt();
+}
+
+void ConfigManager::setMaxThreadCount(int count) {
+    setCachedValue("ThreadPool/MaxThreadCount", count);
+    emit configChanged("ThreadPool/MaxThreadCount");
 }
 
 void ConfigManager::enableCache(bool enable) {

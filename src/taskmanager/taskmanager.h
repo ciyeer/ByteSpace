@@ -9,9 +9,6 @@
 #include <memory>
 #include "bytespacetask.h"
 
-// 定义最大线程数常量
-#define MAXTHREADNUM 5
-
 class TaskManager : public QObject {
     Q_OBJECT
 public:

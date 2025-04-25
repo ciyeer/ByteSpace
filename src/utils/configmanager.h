@@ -49,6 +49,10 @@ public:
     void commitTransaction();
     void rollbackTransaction();
 
+    // 线程池配置
+    int maxThreadCount() const;
+    void setMaxThreadCount(int count);
+
 public slots:
     void saveSettings();
     void loadSettings();
@@ -87,6 +91,7 @@ private:
     static const QString DEFAULT_PARITY;
     static const int DEFAULT_MAX_LOG_SIZE = 10;
     static const QString DEFAULT_LOG_PATH;
+    static const int DEFAULT_MAX_THREAD_COUNT = 4;  // 添加线程池默认值
 };
 
 #endif // CONFIGMANAGER_H
