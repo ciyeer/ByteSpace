@@ -31,23 +31,26 @@ void TaskManager::addTask(std::shared_ptr<BytespaceTask> task) {
     }
     
     // 使用互斥锁保护任务队列
-    QMutexLocker locker(&m_mutex);
+    QMutexLocker locker(&m_queueMutex);  // 使用新名称
     
     // 连接任务信号到管理器
     connect(task.get(), &BytespaceTask::taskCompleted, this, &TaskManager::onTaskCompleted);
     connect(task.get(), &BytespaceTask::taskFailed, this, &TaskManager::onTaskFailed);
     
-    // 添加到队列
-    m_taskQueue.enqueue(task);
-    
-    // 如果当前没有任务在执行，启动任务
+    // 如果当前没有正在处理的任务，直接提交到线程池
     if (!m_isProcessing) {
-        processNextTask();
+        m_isProcessing = true;
+        locker.unlock(); // 解锁，避免在执行任务时长时间持有锁
+        m_threadPool->start(task.get());
+        return;
     }
+    
+    // 否则添加到队列
+    m_taskQueue.enqueue(task);
 }
 
 void TaskManager::processNextTask() {
-    QMutexLocker locker(&m_mutex);
+    QMutexLocker locker(&m_queueMutex);  // 使用新名称
     
     if (m_taskQueue.isEmpty()) {
         m_isProcessing = false;
@@ -64,38 +67,28 @@ void TaskManager::processNextTask() {
 
 void TaskManager::executeTask(std::shared_ptr<BytespaceTask> task) {
     QMutexLocker locker(&m_taskMutex);
-    
     if (!task) {
-        LogUtils::logMessage("任务指针为空", LOG::LOG_ERROR);
+        // 使用与BytespaceTask::run相同的错误处理方式
+        QString errorMsg = "任务指针为空";
+        // 使用ErrorHandler处理错误
+        ErrorHandler::instance().handleError(ErrorType::Application, errorMsg, ErrorLevel::Error);
+        // 记录日志
+        LogUtils::logMessage(errorMsg, LOG::LOG_ERROR);
+        // 发送失败信号
         emit taskFailed(QSerialPort::ResourceError);
+        // 处理下一个任务
         QMetaObject::invokeMethod(this, "processNextTask", Qt::QueuedConnection);
         return;
     }
 
     locker.unlock(); // 解锁，避免在执行任务时长时间持有锁
-    
-    try {
-        LogUtils::logMessage(QString("开始执行任务: %1").arg(task->getTaskName()), LOG::LOG_DEBUG);
-        bool result = task->execute();
-        // 让任务自身发出信号，而不是在这里调用
-        // 任务的 execute 方法应该在成功时发出 taskCompleted 信号
-        // 在失败时发出 taskFailed 信号
-    } 
-    catch (const std::exception& e) {
-        QString errorMsg = QString("任务执行异常: %1").arg(e.what());
-        LogUtils::logMessage(errorMsg, LOG::LOG_ERROR);
-        emit task->taskFailed(QSerialPort::UnknownError);
-    }
-    catch (...) {
-        LogUtils::logMessage("任务执行未知异常", LOG::LOG_ERROR);
-        emit task->taskFailed(QSerialPort::UnknownError);
-    }
+    // 直接使用QThreadPool运行任务，让任务的run方法处理异常
+    m_threadPool->start(task.get());
 }
 
 void TaskManager::onTaskCompleted() {
     // 发送任务完成信号
     emit taskCompleted();
-    
     // 处理下一个任务
     QMetaObject::invokeMethod(this, "processNextTask", Qt::QueuedConnection);
 }
@@ -110,7 +103,7 @@ void TaskManager::onTaskFailed(QSerialPort::SerialPortError error) {
 }
 
 void TaskManager::decrementPendingTasks() {
-    QMutexLocker locker(&m_mutex);
+    QMutexLocker locker(&m_queueMutex);  // 使用新名称
     --m_pendingTasks;
 }
 

@@ -160,11 +160,11 @@ void SerialPortManager::startReading() {
         return;
     }
     
-    // 只在未连接时才连接信号
-    if (!serialPort->receivers(SIGNAL(readyRead()))) {
-        connect(serialPort, &QSerialPort::readyRead, this, &SerialPortManager::handleReadyRead);
-        LogUtils::logMessage("串口数据读取监听已启动", LOG::LOG_INFO);
-    }
+    // 断开旧连接并创建新连接
+    disconnect(serialPort, &QSerialPort::readyRead, this, &SerialPortManager::handleReadyRead);
+    connect(serialPort, &QSerialPort::readyRead, this, &SerialPortManager::handleReadyRead);
+    
+    LogUtils::logMessage("串口数据读取监听已启动", LOG::LOG_INFO);
 }
 
 void SerialPortManager::handleError(QSerialPort::SerialPortError error) {

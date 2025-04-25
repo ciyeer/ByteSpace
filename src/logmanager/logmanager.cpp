@@ -62,6 +62,20 @@ void LogManager::rotateLogFile(QFile* file) {
         QString fileName = file->fileName();
         file->close();
         
+        // 限制备份文件数量
+        QDir dir = QFileInfo(fileName).dir();
+        QStringList filters;
+        filters << QFileInfo(fileName).fileName() + ".*.bak";
+        QFileInfoList backups = dir.entryInfoList(filters, QDir::Files, QDir::Time);
+        
+        // 如果备份文件超过10个，删除最旧的
+        const int MAX_BACKUPS = 10;
+        if (backups.size() >= MAX_BACKUPS) {
+            for (int i = MAX_BACKUPS - 1; i < backups.size(); ++i) {
+                QFile::remove(backups[i].absoluteFilePath());
+            }
+        }
+        
         // 备份旧文件
         QString backupName = fileName + "." + QDateTime::currentDateTime()
             .toString("yyyy-MM-dd-hh-mm-ss") + ".bak";

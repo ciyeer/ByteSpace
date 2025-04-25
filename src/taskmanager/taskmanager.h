@@ -43,10 +43,9 @@ private:
     void executeTask(std::shared_ptr<BytespaceTask> task);
 
     QQueue<std::shared_ptr<BytespaceTask>> m_taskQueue;
-    QMutex m_mutex;
+    QMutex m_queueMutex;  // 重命名为更有描述性的名称
     QMutex m_taskMutex;
     QThreadPool* m_threadPool;
-    std::shared_ptr<BytespaceTask> m_currentTask;
     int m_pendingTasks;
     bool m_isProcessing = false;
 };
