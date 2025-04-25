@@ -124,7 +124,7 @@ void TaskManager::setMaxThreads(int nMaxThreads) {
     // 同时更新配置管理器中的值
     ConfigManager::instance().setMaxThreadCount(nMaxThreads);
 }
-
+ 
 int TaskManager::activeThreadCount() const {
     return m_threadPool->activeThreadCount();
 }
