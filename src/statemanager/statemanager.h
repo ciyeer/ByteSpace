@@ -16,6 +16,16 @@ enum class AppState {
     Error           // 错误状态
 };
 
+/**
+ * @class StateManager
+ * @brief 应用程序状态管理器
+ *
+ * StateManager负责管理应用程序的状态转换，确保状态变化符合预定义的规则。
+ * 使用单例模式实现，保证全局只有一个状态管理实例。
+ *
+ * @author ByteSpace团队
+ * @date 2024-11-11
+ */
 class StateManager : public QObject {
     Q_OBJECT
 public:
@@ -23,7 +33,23 @@ public:
     static StateManager& instance();
     
     // 状态管理
+    /**
+     * @brief 改变应用程序状态
+     * @param newState 目标状态
+     * @return 状态转换是否成功
+     *
+     * 尝试将应用程序状态从当前状态转换为目标状态。
+     * 只有当目标状态在当前状态的允许转换列表中时，转换才会成功。
+     * 状态转换成功后会发出stateChanged信号。
+     */
     bool changeState(AppState newState);
+    
+    /**
+     * @brief 获取当前应用程序状态
+     * @return 当前状态
+     *
+     * 线程安全的获取当前应用程序状态。
+     */
     AppState currentState() const;
     QString currentStateString() const;
     bool canTransitionTo(AppState targetState) const;
