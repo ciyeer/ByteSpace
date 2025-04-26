@@ -73,6 +73,7 @@ bool StateManager::canTransitionTo(AppState targetState) const {
 }
 
 bool StateManager::isInState(AppState state) const {
+    QMutexLocker locker(&m_mutex);
     return m_currentState == state;
 }
 
