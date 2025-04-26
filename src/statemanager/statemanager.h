@@ -6,7 +6,10 @@
 #include <QMap>
 #include <QString>
 
-// 应用程序状态枚举
+/**
+ * @enum AppState
+ * @brief 应用程序状态枚举
+ */
 enum class AppState {
     Idle,           // 空闲状态
     Connecting,     // 正在连接
@@ -61,6 +64,13 @@ public:
     bool setErrorState(const QString& errorMessage);
     
 signals:
+    /**
+     * @brief 状态变化信号
+     * @param oldState 旧状态
+     * @param newState 新状态
+     *
+     * 当应用程序状态发生变化时发出此信号。
+     */
     void stateChanged(AppState oldState, AppState newState);
     
 private:
