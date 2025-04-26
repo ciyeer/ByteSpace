@@ -1,9 +1,6 @@
 #ifndef BYTESPACE_BUILDCONFIG_H
 #define BYTESPACE_BUILDCONFIG_H
 
-// 构建配置头文件
-// 此文件由CMake在构建时生成，包含项目的基本信息和构建时的配置参数
-
 // 项目基本信息
 #define BYTESPACE_NAME "@BYTESPACE_NAME@"  // 项目名称
 
@@ -29,15 +26,5 @@
 // 编译器和构建类型信息
 #define CXX_COMPILER "@CMAKE_CXX_COMPILER@"  // C++编译器路径
 #define BUILD_TYPE "@CMAKE_BUILD_TYPE@"      // 构建类型(Debug/Release)
-
-// 平台相关的条件编译支持
-#cmakedefine BYTESPACE_PLATFORM_WINDOWS  // Windows平台
-#cmakedefine BYTESPACE_PLATFORM_LINUX    // Linux平台
-#cmakedefine BYTESPACE_PLATFORM_MACOS    // macOS平台
-
-// 调试相关配置
-#cmakedefine BYTESPACE_DEBUG_MODE        // 调试模式
-#cmakedefine BYTESPACE_ENABLE_LOGGING    // 启用日志
-#cmakedefine BYTESPACE_ENABLE_PROFILING  // 启用性能分析
 
 #endif  // BYTESPACE_BUILDCONFIG_H
