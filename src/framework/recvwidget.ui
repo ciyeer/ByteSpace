@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1002</width>
-    <height>556</height>
+    <width>875</width>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,14 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QTextBrowser" name="recvArea"/>
+    <widget class="QTextBrowser" name="recvArea">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
