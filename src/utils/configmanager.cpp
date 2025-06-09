@@ -5,8 +5,8 @@
 
 const QString ConfigManager::DEFAULT_PORT_NAME = "COM1";
 const QString ConfigManager::DEFAULT_PARITY = "None";
-const QString ConfigManager::DEFAULT_LOG_PATH = 
-    QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/Termnite/logs";
+const QString ConfigManager::DEFAULT_LOG_PATH =
+    QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/Bytespace/logs";
 
 ConfigManager& ConfigManager::instance() {
     static ConfigManager instance;
@@ -93,7 +93,6 @@ void ConfigManager::initializeDefaultValues() {
         m_settings->setValue("UI/RememberWindowGeometry", true);
     }
     
-
     // 日志配置
     if (!m_settings->contains("Log/AutoSave")) {
         m_settings->setValue("Log/AutoSave", true);
