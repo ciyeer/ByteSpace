@@ -1,0 +1,48 @@
+{
+    "files.exclude": {
+        "**/*.o": true,
+        "**/*.obj": true,
+        "**/build": true,
+        "**/out": true,
+        "**/CMakeFiles": true,
+        "**/CMakeCache.txt": true,
+        "**/*.exe": true,
+        "**/*.dll": true,
+        "**/*.so": true,
+        "**/*.dylib": true,
+        "**/*.a": true,
+        "**/*.lib": true,
+        "**/*.pdb": true,
+        "**/moc_*.cpp": true,
+        "**/moc_*.h": true,
+        "**/qrc_*.cpp": true,
+        "**/ui_*.h": true,
+        "**/*.pro.user*": true,
+        "**/*.qbs.user*": true,
+        "**/*.tmp": true,
+        "**/*.temp": true,
+        "**/*.log": true,
+        "**/*.bak": true,
+        "**/Thumbs.db": true,
+        "**/.DS_Store": true,
+        "**/release": true,
+        "**/debug": true
+    },
+    "files.watcherExclude": {
+        "**/build/**": true,
+        "**/out/**": true,
+        "**/CMakeFiles/**": true,
+        "**/*.o": true,
+        "**/*.obj": true
+    },
+    "search.exclude": {
+        "**/build": true,
+        "**/out": true,
+        "**/CMakeFiles": true,
+        "**/*.o": true,
+        "**/*.obj": true,
+        "**/moc_*.cpp": true,
+        "**/qrc_*.cpp": true,
+        "**/ui_*.h": true
+    }
+}
