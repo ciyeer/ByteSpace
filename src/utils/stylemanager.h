@@ -13,12 +13,12 @@ public:
     static void loadStyleSheet(QApplication& app, const QString& styleFilePath = DEFAULTSTYLEFILEPATH);
     
     // 设置应用程序基础样式
-    static void setupApplicationStyle(QApplication& app, const QString& styleName = DEFAULTSTYLENAME);
+    static void setupAppStyle(QApplication& app, const QString& styleName = DEFAULTSTYLENAME);
     
     // 初始化完整的应用程序样式（包括基础样式和样式表）
-    static void initializeApplicationStyle(QApplication& app, 
-                                         const QString& styleName = DEFAULTSTYLENAME,
-                                         const QString& styleFilePath = DEFAULTSTYLEFILEPATH);
+    static void initAppStyle(QApplication& app, 
+                             const QString& styleName = DEFAULTSTYLENAME,
+                             const QString& styleFilePath = DEFAULTSTYLEFILEPATH);
 
 private:
     StyleManager() = delete; // 禁止实例化

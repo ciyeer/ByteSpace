@@ -17,18 +17,15 @@ void StyleManager::loadStyleSheet(QApplication& app, const QString& styleFilePat
     }
 }
 
-void StyleManager::setupApplicationStyle(QApplication& app, const QString& styleName)
+void StyleManager::setupAppStyle(QApplication& app, const QString& styleName)
 {
     app.setStyle(QStyleFactory::create(styleName));
     qDebug() << "已设置应用程序样式:" << styleName;
 }
 
-void StyleManager::initializeApplicationStyle(QApplication& app, 
-                                            const QString& styleName,
-                                            const QString& styleFilePath)
-{
+void StyleManager::initAppStyle(QApplication& app, const QString& styleName, const QString& styleFilePath) {
     // 设置基础样式
-    setupApplicationStyle(app, styleName);
+    setupAppStyle(app, styleName);
     
     // 加载样式表
     loadStyleSheet(app, styleFilePath);
