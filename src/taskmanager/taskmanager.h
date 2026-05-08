@@ -6,6 +6,7 @@
 #include <QMutex>
 #include <QThreadPool>
 #include <QSerialPort>
+#include <QList>
 #include <memory>
 #include "bytespacetask.h"
 
@@ -38,8 +39,11 @@ private:
     
     // 将executeTask移到私有方法
     void executeTask(std::shared_ptr<BytespaceTask> task);
+    void startTask(const std::shared_ptr<BytespaceTask>& task);
+    void releaseTaskForSender(QObject* senderObj);
 
     QQueue<std::shared_ptr<BytespaceTask>> m_taskQueue;
+    QList<std::shared_ptr<BytespaceTask>> m_runningTasks;
     QMutex m_queueMutex;  // 重命名为更有描述性的名称
     QMutex m_taskMutex;
     QThreadPool* m_threadPool;

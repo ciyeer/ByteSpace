@@ -5,7 +5,12 @@
 // 在 Framework 类的构造函数中添加
 Framework::Framework(QWidget *parent)
     : BaseFramework(parent)
-    , ui(new Ui::Framework) {
+    , ui(new Ui::Framework)
+    , m_pTitleBar(nullptr)
+    , m_pBytetraceBase(nullptr)
+    , m_pSettingsUI(nullptr)
+    , m_pStatusBar(nullptr)
+    , m_pStackedWidget(nullptr) {
     ui->setupUi(this);
     this->setWindowFlag(Qt::FramelessWindowHint);
 
@@ -15,13 +20,7 @@ Framework::Framework(QWidget *parent)
     m_pTitleBar = new TitleBar;
     m_pBytetraceBase = new BytetraceBase;
     m_pSettingsUI = new SettingsUI;
-    //m_pTermnite = new Termnite;
     m_pStatusBar = new StatusBar;
-
-    ui->titleBarLayout->addWidget(m_pTitleBar);
-    //ui->termniteLayout->addWidget(m_pTermnite);
-    ui->termniteLayout->addWidget(m_pBytetraceBase);
-    ui->statusBarLayout->addWidget(m_pStatusBar);
 
     // 创建 QStackedWidget
     m_pStackedWidget = new QStackedWidget;
@@ -29,7 +28,6 @@ Framework::Framework(QWidget *parent)
     m_pStackedWidget->addWidget(m_pSettingsUI);     // 索引 1
 
     ui->titleBarLayout->addWidget(m_pTitleBar);
-    //ui->termniteLayout->addWidget(m_pTermnite);
     ui->termniteLayout->addWidget(m_pStackedWidget); // 使用 QStackedWidget 替代直接添加 m_pBytetraceBase
     ui->statusBarLayout->addWidget(m_pStatusBar);
 
@@ -68,11 +66,4 @@ void Framework::closeEvent(QCloseEvent *event) {
 
 Framework::~Framework() {
     delete ui;
-    // 建议添加以下代码
-    delete m_pTitleBar;
-    delete m_pTermnite;
-    delete m_pStatusBar;
-    delete m_pBytetraceBase;
-    delete m_pSettingsUI;
-    delete m_pStackedWidget; // 添加删除 m_pStackedWidget
 }

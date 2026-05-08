@@ -51,7 +51,7 @@ void TaskManager::addTask(std::shared_ptr<BytespaceTask> task) {
     if (!m_isProcessing) {
         m_isProcessing = true;
         locker.unlock(); // 解锁，避免在执行任务时长时间持有锁
-        m_threadPool->start(task.get());
+        executeTask(task);
         return;
     }
     
@@ -92,11 +92,33 @@ void TaskManager::executeTask(std::shared_ptr<BytespaceTask> task) {
     }
 
     locker.unlock(); // 解锁，避免在执行任务时长时间持有锁
+    startTask(task);
+}
+
+void TaskManager::startTask(const std::shared_ptr<BytespaceTask>& task) {
+    {
+        QMutexLocker locker(&m_taskMutex);
+        m_runningTasks.append(task);
+    }
     // 直接使用QThreadPool运行任务，让任务的run方法处理异常
     m_threadPool->start(task.get());
 }
 
+void TaskManager::releaseTaskForSender(QObject* senderObj) {
+    if (!senderObj) {
+        return;
+    }
+    QMutexLocker locker(&m_taskMutex);
+    for (int i = 0; i < m_runningTasks.size(); ++i) {
+        if (m_runningTasks[i].get() == senderObj) {
+            m_runningTasks.removeAt(i);
+            break;
+        }
+    }
+}
+
 void TaskManager::onTaskCompleted() {
+    releaseTaskForSender(sender());
     // 发送任务完成信号
     emit taskCompleted();
     // 处理下一个任务
@@ -104,6 +126,7 @@ void TaskManager::onTaskCompleted() {
 }
 
 void TaskManager::onTaskFailed(QSerialPort::SerialPortError error) {
+    releaseTaskForSender(sender());
     // 使用ErrorHandler处理错误
     ErrorHandler::instance().handleSerialPortError(error);
     // 发送任务错误信号

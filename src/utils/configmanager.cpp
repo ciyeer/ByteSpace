@@ -300,8 +300,13 @@ void ConfigManager::resetSettings() {
 }
 
 void ConfigManager::sync() {
-    QMutexLocker locker(&m_mutex);
-    if (m_inTransaction) {
+    bool needCommit = false;
+    {
+        QMutexLocker locker(&m_mutex);
+        needCommit = m_inTransaction;
+    }
+
+    if (needCommit) {
         commitTransaction();
     }
     saveSettings();

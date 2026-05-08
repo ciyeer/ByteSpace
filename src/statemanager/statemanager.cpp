@@ -36,8 +36,9 @@ void StateManager::initializeStateStrings() {
 bool StateManager::changeState(AppState newState) {
     QMutexLocker locker(&m_mutex);
     
-    // 检查状态转换是否允许
-    if (!canTransitionTo(newState)) {
+    // 在同一锁上下文内检查转换，避免重复加锁导致死锁
+    if (newState != m_currentState &&
+        !m_allowedTransitions.value(m_currentState).contains(newState)) {
         return false;
     }
     // 保存旧状态

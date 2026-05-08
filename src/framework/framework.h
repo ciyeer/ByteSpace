@@ -5,7 +5,6 @@
 #include "baseframework.h"
 #include "bytetracebase.h"
 #include "settingsui/settingsui.h"
-#include "termnite.h"
 #include "titlebar.h"
 #include "statusbar.h"
 #include <QStackedWidget>
@@ -32,7 +31,6 @@ private:
     TitleBar *m_pTitleBar;
     BytetraceBase *m_pBytetraceBase;
     SettingsUI *m_pSettingsUI;
-    Termnite *m_pTermnite;
     StatusBar *m_pStatusBar;
     QStackedWidget *m_pStackedWidget; // 添加 QStackedWidget 成员
     

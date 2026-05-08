@@ -48,7 +48,7 @@ string(TIMESTAMP BUILD_TIMESTAMP "%Y-%m-%d %H:%M:%S")
 
 # 配置生成头文件
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/buildconfig.h.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/BuildConfig.h.in"
     "${CMAKE_CURRENT_BINARY_DIR}/buildconfig.h"
 )
 

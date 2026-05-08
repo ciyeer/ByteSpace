@@ -9,7 +9,8 @@
 // 只需要基类的基本实现
 BytespaceTask::BytespaceTask(int priority)
     : m_priority(priority) {
-    setAutoDelete(true);
+    // 生命周期由TaskManager管理，避免与shared_ptr产生双重释放风险
+    setAutoDelete(false);
 }
 
 void BytespaceTask::run() {

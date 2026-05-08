@@ -220,7 +220,7 @@ bool SerialPortConfigurator::configureFromSettings() {
     int baudRate = ConfigManager::instance().baudRate();
     int dataBits = ConfigManager::instance().dataBits();
     int stopBits = ConfigManager::instance().stopBits();
-    QString parityStr = ConfigManager::instance().parity();
+    QString parityStr = ConfigManager::instance().parity().trimmed().toUpper();
     
     // 设置串口参数
     m_serialPort->setPortName(portName);
@@ -247,16 +247,16 @@ bool SerialPortConfigurator::configureFromSettings() {
     
     // 设置校验位
     QSerialPort::Parity parityEnum = QSerialPort::NoParity;
-    if (parityStr == "Even") {
+    if (parityStr == "EVEN") {
         parityEnum = QSerialPort::EvenParity;
     }
-    else if (parityStr == "Odd") {
+    else if (parityStr == "ODD") {
         parityEnum = QSerialPort::OddParity;
     }
-    else if (parityStr == "Space") {
+    else if (parityStr == "SPACE") {
         parityEnum = QSerialPort::SpaceParity;
     }
-    else if (parityStr == "Mark") {
+    else if (parityStr == "MARK") {
         parityEnum = QSerialPort::MarkParity;
     }
     m_serialPort->setParity(parityEnum);
