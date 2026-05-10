@@ -1,3 +1,10 @@
+/**
+ * @file taskmanager.cpp
+ * @brief 任务管理器实现
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #include "taskmanager.h"
 #include <QDebug>
 #include <QMetaObject>

@@ -1,3 +1,12 @@
+/**
+ * @file taskmanager.h
+ * @brief 任务管理器
+ *
+ * 基于 QThreadPool 管理异步任务队列，支持优先级和并发控制。
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #ifndef TASKMANAGER_H
 #define TASKMANAGER_H
 

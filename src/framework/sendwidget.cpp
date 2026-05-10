@@ -13,4 +13,7 @@ SendWidget::~SendWidget()
     delete ui;
 }
 
-
+QTextEdit* SendWidget::sendArea() const { return ui->sendArea; }
+QPushButton* SendWidget::dataSendBtn() const { return ui->dataSendBtn; }
+QPushButton* SendWidget::clearSendBtn() const { return ui->clearSendBtn; }
+QPushButton* SendWidget::clearRecvBtn() const { return ui->clearRecvBtn; }

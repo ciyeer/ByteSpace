@@ -12,3 +12,5 @@ RecvWidget::~RecvWidget()
 {
     delete ui;
 }
+
+QTextBrowser* RecvWidget::recvArea() const { return ui->recvArea; }

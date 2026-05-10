@@ -1,8 +1,17 @@
+/**
+ * @file updatemanager.h
+ * @brief 应用程序更新管理器
+ *
+ * 检查远程更新、下载安装包并验证完整性后执行安装。
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #ifndef UPDATEMANAGER_H
 #define UPDATEMANAGER_H
 
 #include <QObject>
-#include <QSystemTrayIcon> // 提前放置，优先加载
+#include <QSystemTrayIcon>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QProgressDialog>
@@ -12,14 +21,13 @@ class UpdateManager : public QObject {
 
 public:
     explicit UpdateManager(QSystemTrayIcon* trayIcon, QObject* parent = nullptr);
-    void checkForUpdate(); // 检查更新
+    void checkForUpdate();
 
 private:
     QSystemTrayIcon* trayIcon;
     QNetworkAccessManager* networkManager;
     QProgressDialog* progressDialog;
-    QString currentVersion{"1.0.0"};  // 添加版本号作为成员变量
-    QString updateUrl{"https://example.com/update.json"};  // 添加更新URL作为成员变量
+    QString updateUrl;
 
     void showUpdateAvailable(const QString& version, const QString& url, const QString& changelog, const QString& md5);
     void startDownload(const QString& url, const QString& expectedMd5);
@@ -32,5 +40,4 @@ private slots:
 };
 
 #endif // UPDATEMANAGER_H
-//
 

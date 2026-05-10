@@ -1,3 +1,10 @@
+/**
+ * @file configmanager.cpp
+ * @brief 应用程序配置管理器实现
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #include "configmanager.h"
 #include "logmanager/logutils.h"
 #include <QDir>
@@ -5,6 +12,7 @@
 
 const QString ConfigManager::DEFAULT_PORT_NAME = "COM1";
 const QString ConfigManager::DEFAULT_PARITY = "None";
+const QString ConfigManager::DEFAULT_FLOW_CONTROL = "NONE";
 const QString ConfigManager::DEFAULT_LOG_PATH =
     QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/Bytespace/logs";
 
@@ -42,6 +50,7 @@ ConfigManager::ConfigManager(QObject *parent) : QObject(parent),
             out << "DataBits=" << DEFAULT_DATA_BITS << "\n";
             out << "StopBits=" << DEFAULT_STOP_BITS << "\n";
             out << "Parity=" << DEFAULT_PARITY << "\n";
+            out << "FlowControl=" << DEFAULT_FLOW_CONTROL << "\n";
             
             // 添加默认UI配置
             out << "[UI]\n";
@@ -86,6 +95,9 @@ void ConfigManager::initializeDefaultValues() {
     }
     if (!m_settings->contains("SerialPort/Parity")) {
         m_settings->setValue("SerialPort/Parity", DEFAULT_PARITY);
+    }
+    if (!m_settings->contains("SerialPort/FlowControl")) {
+        m_settings->setValue("SerialPort/FlowControl", DEFAULT_FLOW_CONTROL);
     }
     
     // 界面配置
@@ -213,6 +225,14 @@ void ConfigManager::setParity(const QString& parity) {
     setCachedValue("SerialPort/Parity", parity);
 }
 
+QString ConfigManager::flowControl() const {
+    return getCachedValue("SerialPort/FlowControl", DEFAULT_FLOW_CONTROL).toString();
+}
+
+void ConfigManager::setFlowControl(const QString& flowControl) {
+    setCachedValue("SerialPort/FlowControl", flowControl);
+}
+
 // 界面配置
 bool ConfigManager::rememberWindowGeometry() const {
     return getCachedValue("UI/RememberWindowGeometry", true).toBool();
@@ -262,7 +282,6 @@ int ConfigManager::maxThreadCount() const {
 
 void ConfigManager::setMaxThreadCount(int count) {
     setCachedValue("ThreadPool/MaxThreadCount", count);
-    emit configChanged("ThreadPool/MaxThreadCount");
 }
 
 void ConfigManager::enableCache(bool enable) {

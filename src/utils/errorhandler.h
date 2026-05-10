@@ -1,3 +1,12 @@
+/**
+ * @file errorhandler.h
+ * @brief 错误处理器
+ *
+ * 统一管理应用程序中的各类错误，提供错误消息映射和错误状态跟踪。
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #ifndef ERRORHANDLER_H
 #define ERRORHANDLER_H
 

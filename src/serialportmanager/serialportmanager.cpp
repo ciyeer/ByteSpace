@@ -1,3 +1,10 @@
+/**
+ * @file serialportmanager.cpp
+ * @brief 串口管理器实现
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #include "serialportmanager.h"
 #include <QSerialPortInfo>
 #include <QDebug>

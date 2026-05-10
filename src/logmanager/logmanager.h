@@ -1,3 +1,12 @@
+/**
+ * @file logmanager.h
+ * @brief 日志管理器
+ *
+ * 提供异步日志文件写入功能，支持日志轮转和错误级别分类。
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #ifndef LOGMANAGER_H
 #define LOGMANAGER_H
 

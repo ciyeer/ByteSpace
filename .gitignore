@@ -118,3 +118,6 @@ coverage/
 release/
 debug/
 dist/
+
+# IDE 缓存
+.cache/

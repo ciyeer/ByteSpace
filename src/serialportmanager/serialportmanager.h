@@ -1,3 +1,13 @@
+/**
+ * @file serialportmanager.h
+ * @brief 串口管理器
+ *
+ * 组合 SerialPortConfigurator 和 SerialPortOperator，
+ * 提供统一的串口配置、操作和状态查询接口。
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #ifndef SERIALPORTMANAGER_H
 #define SERIALPORTMANAGER_H
 

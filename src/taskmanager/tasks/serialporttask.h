@@ -26,32 +26,16 @@ public:
     
     bool execute() override;
     
-    // 获取任务类型
     SerialPortTaskType taskType() const { return m_taskType; }
     
 protected:
-    // 串口管理器
     std::shared_ptr<SerialPortManager> m_pSerialPortManager;
     
-    // 任务类型
     SerialPortTaskType m_taskType;
     
-    // 数据缓冲区
     QByteArray m_data;
     
-    // 错误处理辅助方法
     void handleError(QSerialPort::SerialPortError error, const QString& message);
-    
-    // Add these method declarations
-    void openPort();
-    void writeData();
-    void readData();
-    
-signals:
-    // Add signal declarations that are emitted in the implementation
-    void portOpened();
-    void dataWritten(const QByteArray& data);
-    void dataRead(const QByteArray& data);
 };
 
 #endif // SERIALPORTTASK_H

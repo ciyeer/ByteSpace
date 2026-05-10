@@ -1,3 +1,13 @@
+/**
+ * @file configmanager.h
+ * @brief 应用程序配置管理器
+ *
+ * 使用 QSettings 管理应用程序配置。支持缓存、事务批处理、
+ * 串口配置、UI 配置、日志配置和线程池配置。
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #ifndef CONFIGMANAGER_H
 #define CONFIGMANAGER_H
 
@@ -7,7 +17,6 @@
 #include <QString>
 #include <QVariant>
 #include <QHash>
-//#include <optional>
 
 class ConfigManager : public QObject {
     Q_OBJECT
@@ -25,6 +34,8 @@ public:
     void setStopBits(int bits);
     QString parity() const;
     void setParity(const QString& parity);
+    QString flowControl() const;
+    void setFlowControl(const QString& flowControl);
 
     // 界面配置
     bool rememberWindowGeometry() const;
@@ -89,6 +100,7 @@ private:
     static const int DEFAULT_DATA_BITS = 8;
     static const int DEFAULT_STOP_BITS = 1;
     static const QString DEFAULT_PARITY;
+    static const QString DEFAULT_FLOW_CONTROL;
     static const int DEFAULT_MAX_LOG_SIZE = 10;
     static const QString DEFAULT_LOG_PATH;
     static const int DEFAULT_MAX_THREAD_COUNT = 4;  // 添加线程池默认值

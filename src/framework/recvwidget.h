@@ -2,6 +2,7 @@
 #define RECVWIDGET_H
 
 #include <QWidget>
+#include <QTextBrowser>
 
 namespace Ui {
 class RecvWidget;
@@ -13,6 +14,8 @@ class RecvWidget : public QWidget {
 public:
     explicit RecvWidget(QWidget *parent = nullptr);
     ~RecvWidget();
+
+    QTextBrowser* recvArea() const;
 
 private:
     Ui::RecvWidget *ui;

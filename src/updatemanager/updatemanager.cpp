@@ -1,4 +1,12 @@
+/**
+ * @file updatemanager.cpp
+ * @brief 应用程序更新管理器实现
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #include "updatemanager.h"
+#include "buildconfig.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
@@ -6,7 +14,6 @@
 #include <QFile>
 #include <QCryptographicHash>
 #include <QProcess>
-#include <QPainter>
 #include <QCoreApplication>
 
 UpdateManager::UpdateManager(QSystemTrayIcon* trayIcon, QObject* parent)
@@ -14,6 +21,7 @@ UpdateManager::UpdateManager(QSystemTrayIcon* trayIcon, QObject* parent)
     networkManager = new QNetworkAccessManager(this);
     progressDialog = new QProgressDialog("Downloading update...", "Cancel", 0, 100, nullptr);
     progressDialog->setWindowModality(Qt::WindowModal);
+    updateUrl = QString("https://ciyeer.com/bytespace/update.json");
 }
 
 void UpdateManager::checkForUpdate() {
@@ -40,7 +48,7 @@ void UpdateManager::onUpdateCheckFinished(QNetworkReply* reply) {
     QString changelog = jsonObj.value("changelog").toString();
     QString md5 = jsonObj.value("md5").toString();
 
-    if (latestVersion > currentVersion) {
+    if (latestVersion > QString(BYTESPACE_VERSION)) {
         showUpdateAvailable(latestVersion, downloadUrl, changelog, md5);
     }
     else {

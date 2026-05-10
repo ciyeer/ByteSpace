@@ -4,7 +4,8 @@ cmake_minimum_required(VERSION 3.16)
 set(BYTESPACE_VERSION 1.7)
 project(ByteSpace VERSION ${BYTESPACE_VERSION} LANGUAGES CXX)
 
-# 设置项目名称（大写）
+# 设置项目名称
+set(BYTESPACE_NAME "ByteSpace")
 set(PROJECT_NAME_CAPITALIZED "ByteSpace")
 # 设置输出消息的等级为 NOTICE 以隐藏不必要的信息
 set(CMAKE_MESSAGE_LOG_LEVEL NOTICE)
@@ -46,9 +47,15 @@ endif()
 # 获取构建时间
 string(TIMESTAMP BUILD_TIMESTAMP "%Y-%m-%d %H:%M:%S")
 
+# 构建编号
+set(BUILD_NUMBER 0)
+
+# 语言文件安装目录
+set(BYTESPACE_LANG_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/lang")
+
 # 配置生成头文件
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/buildconfig.h.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/BuildConfig.h.in"
     "${CMAKE_CURRENT_BINARY_DIR}/buildconfig.h"
 )
 
@@ -63,7 +70,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 设置编译选项
 if(MSVC)
-    add_compile_options(/W4 /WX /O2)
+    add_compile_options(/W4 /WX /O2 /utf-8 /Zc:__cplusplus /permissive-)
 else()
     add_compile_options(-Wall -Wextra -Wpedantic -O2)
 endif()
