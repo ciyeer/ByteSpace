@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     ConfigManager::instance();
 
     // 初始化应用程序样式
-    StyleManager::initAppStyle(app);
+    StyleManager::setupAppStyle(app);
     
     // 输出配置文件路径
     QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);

@@ -1,0 +1,413 @@
+/* =============================================================================
+   ByteSpace QSS Stylesheet - 现代深色专业主题
+   ============================================================================= */
+
+/* ---- 全局 ---- */
+QWidget {
+    font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+    font-size: 13px;
+    color: #e0e0e0;
+}
+
+/* ---- 主窗口背景 ---- */
+QWidget#Framework {
+    background-color: #1e1e2e;
+}
+
+/* ---- 标题栏 ---- */
+QWidget#TitleBar {
+    background-color: #16162a;
+    border-bottom: 1px solid #2d2d4a;
+}
+
+QWidget#TitleBar QLabel#labelTips {
+    color: #c0c0d0;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 4px;
+}
+
+QWidget#TitleBar QLabel#labelLogo {
+    background-color: #4a9eff;
+    border-radius: 4px;
+    min-width: 31px;
+    min-height: 31px;
+    max-width: 31px;
+    max-height: 31px;
+}
+
+QWidget#TitleBar QPushButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+    color: #c0c0d0;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 28px;
+    min-height: 28px;
+    max-width: 28px;
+    max-height: 28px;
+}
+
+QWidget#TitleBar QPushButton:hover {
+    background-color: #3a3a5a;
+}
+
+QWidget#TitleBar QPushButton#btnClose:hover {
+    background-color: #e81123;
+    color: white;
+}
+
+QWidget#TitleBar QPushButton#btnSPin {
+    font-size: 16px;
+}
+
+/* ---- 底部状态栏 ---- */
+QWidget#StatusBar {
+    background-color: #16162a;
+    border-top: 1px solid #2d2d4a;
+}
+
+QWidget#StatusBar QLabel {
+    color: #8888a0;
+    font-size: 11px;
+}
+
+/* ---- 左侧配置面板 (LeftBar) ---- */
+QWidget#LeftBar {
+    background-color: #252540;
+    border-right: 1px solid #2d2d4a;
+}
+
+QWidget#LeftBar QGroupBox {
+    background-color: #252540;
+    border: 1px solid #2d2d4a;
+    border-radius: 6px;
+    margin-top: 8px;
+    padding-top: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #aaaaCC;
+}
+
+QWidget#LeftBar QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 6px;
+    color: #aaaacc;
+}
+
+QWidget#LeftBar QLabel {
+    color: #b0b0c8;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QWidget#LeftBar QComboBox {
+    background-color: #1e1e30;
+    border: 1px solid #3a3a55;
+    border-radius: 4px;
+    padding: 2px 8px;
+    color: #e0e0e0;
+    font-size: 12px;
+    font-weight: bold;
+    min-height: 26px;
+}
+
+QWidget#LeftBar QComboBox:hover {
+    border-color: #4a9eff;
+}
+
+QWidget#LeftBar QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QWidget#LeftBar QComboBox::down-arrow {
+    image: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #8888a0;
+    margin-right: 6px;
+}
+
+QWidget#LeftBar QComboBox QAbstractItemView {
+    background-color: #1e1e30;
+    border: 1px solid #3a3a55;
+    selection-background-color: #4a9eff;
+    color: #e0e0e0;
+    outline: none;
+}
+
+/* ---- 打开/关闭串口按钮 (LeftBar) ---- */
+QWidget#LeftBar QPushButton#openCloseButton {
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 95px;
+    min-height: 40px;
+    max-width: 95px;
+    max-height: 40px;
+}
+
+/* ---- LeftBar RadioButtons ---- */
+QWidget#LeftBar QRadioButton {
+    color: #b0b0c8;
+    font-size: 12px;
+    font-weight: bold;
+    spacing: 6px;
+}
+
+QWidget#LeftBar QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    border: 2px solid #5555aa;
+    background-color: transparent;
+}
+
+QWidget#LeftBar QRadioButton::indicator:checked {
+    background-color: #4a9eff;
+    border-color: #4a9eff;
+}
+
+QWidget#LeftBar QRadioButton::indicator:hover {
+    border-color: #4a9eff;
+}
+
+/* ---- 接收/发送区 ---- */
+QWidget#RecvWidget, QWidget#SendWidget {
+    background-color: #1e1e2e;
+}
+
+QTextBrowser#recvArea {
+    background-color: #16162a;
+    border: 1px solid #2d2d4a;
+    border-radius: 6px;
+    color: #d0d0e0;
+    font-size: 13px;
+    padding: 6px;
+    selection-background-color: #4a9eff;
+    selection-color: white;
+}
+
+QTextEdit#sendArea {
+    background-color: #16162a;
+    border: 1px solid #2d2d4a;
+    border-radius: 6px;
+    color: #d0d0e0;
+    font-size: 13px;
+    padding: 6px;
+    selection-background-color: #4a9eff;
+    selection-color: white;
+}
+
+/* ---- SendWidget 操作按钮 ---- */
+QWidget#SendWidget QPushButton {
+    background-color: #2d2d4a;
+    border: 1px solid #3a3a55;
+    border-radius: 4px;
+    color: #c0c0d0;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 12px;
+    min-width: 70px;
+    min-height: 28px;
+}
+
+QWidget#SendWidget QPushButton:hover {
+    background-color: #3a3a5a;
+    border-color: #4a9eff;
+    color: white;
+}
+
+QWidget#SendWidget QPushButton:pressed {
+    background-color: #4a9eff;
+    color: white;
+}
+
+/* ---- 设置界面 (SettingsUI) ---- */
+QWidget#SettingsUI {
+    background-color: #1e1e2e;
+}
+
+QWidget#SettingsUI QListWidget#listWidget {
+    background-color: #1a1a2e;
+    border: none;
+    border-right: 1px solid #2d2d4a;
+    outline: none;
+    padding: 10px 0px;
+}
+
+QWidget#SettingsUI QListWidget#listWidget::item {
+    height: 40px;
+    padding-left: 20px;
+    border-radius: 6px;
+    margin: 2px 10px;
+    color: #b0b0c8;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QWidget#SettingsUI QListWidget#listWidget::item:selected {
+    background-color: #4a9eff;
+    color: white;
+}
+
+QWidget#SettingsUI QListWidget#listWidget::item:hover:!selected {
+    background-color: #2d2d4a;
+    color: #e0e0e0;
+}
+
+QWidget#SettingsUI QStackedWidget#stackedWidget {
+    background-color: #1e1e2e;
+    border: none;
+}
+
+/* ---- 设置页面内通用组件 ---- */
+QWidget#SettingsUI QPushButton {
+    background-color: #4a9eff;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 20px;
+    min-height: 32px;
+}
+
+QWidget#SettingsUI QPushButton:hover {
+    background-color: #5ab0ff;
+}
+
+QWidget#SettingsUI QPushButton:pressed {
+    background-color: #3a8eef;
+}
+
+QWidget#SettingsUI QCheckBox {
+    color: #c0c0d0;
+    font-size: 13px;
+    spacing: 8px;
+}
+
+QWidget#SettingsUI QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: 2px solid #5555aa;
+    background-color: transparent;
+}
+
+QWidget#SettingsUI QCheckBox::indicator:checked {
+    background-color: #4a9eff;
+    border-color: #4a9eff;
+}
+
+QWidget#SettingsUI QGroupBox {
+    border: 1px solid #2d2d4a;
+    border-radius: 6px;
+    margin-top: 8px;
+    padding-top: 16px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #aaaacc;
+}
+
+QWidget#SettingsUI QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 12px;
+    padding: 0 6px;
+}
+
+/* ---- ScrollBar ---- */
+QScrollBar:vertical {
+    background-color: #1e1e2e;
+    width: 8px;
+    margin: 0;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #3a3a55;
+    min-height: 30px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #4a9eff;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0;
+    background: none;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar:horizontal {
+    background-color: #1e1e2e;
+    height: 8px;
+    margin: 0;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #3a3a55;
+    min-width: 30px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #4a9eff;
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0;
+    background: none;
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: none;
+}
+
+/* ---- 通用 QToolTip ---- */
+QToolTip {
+    background-color: #2d2d4a;
+    color: #e0e0e0;
+    border: 1px solid #4a9eff;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* ---- QMessageBox ---- */
+QMessageBox {
+    background-color: #1e1e2e;
+}
+
+QMessageBox QLabel {
+    color: #e0e0e0;
+    font-size: 13px;
+}
+
+QMessageBox QPushButton {
+    background-color: #4a9eff;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 6px 20px;
+    min-width: 80px;
+    font-weight: bold;
+}
+
+QMessageBox QPushButton:hover {
+    background-color: #5ab0ff;
+}

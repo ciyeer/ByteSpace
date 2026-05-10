@@ -1,16 +1,12 @@
 #include "settingsui.h"
 #include "ui_settingsui.h"
-// #include <QIcon>
-// #include <QFont>
-// #include <QScrollArea>
 
 SettingsUI::SettingsUI(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SettingsUI) {
     ui->setupUi(this);
     ui->listWidget->setIconSize(QSize(24, 24));
-    //ui->listWidget->setSpacing(10);
-    // 设置列表样式
+
     ui->listWidget->setStyleSheet(
         "QListWidget {"
         "   background-color: #f5f5f7;"
@@ -33,13 +29,6 @@ SettingsUI::SettingsUI(QWidget *parent)
         "}"
         );
 
-    ui->stackedWidget->setStyleSheet(
-        "QStackedWidget {"
-        "   background-color: white;"
-        "   border: none;"
-        "}"
-        );
-
     m_pAboutPage = new AboutPage;
     m_pAccountPage = new AccountPage;
     m_pAppearancePage = new AppearancePage;
@@ -52,10 +41,8 @@ SettingsUI::SettingsUI(QWidget *parent)
     ui->stackedWidget->insertWidget(3, m_pHelpPage);
     ui->stackedWidget->insertWidget(4, m_pAboutPage);
 
-    // 连接信号和槽
     connect(ui->listWidget, &QListWidget::currentRowChanged, this, &SettingsUI::onCategoryChanged);
 
-    // 默认选中第一项
     ui->listWidget->setCurrentRow(0);
 }
 

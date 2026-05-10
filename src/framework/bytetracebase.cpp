@@ -48,6 +48,8 @@ BytetraceBase::BytetraceBase(QWidget *parent)
 
     initTransferAnimation();
     connections();
+
+    updateUI(false);
 }
 
 void BytetraceBase::connections() {

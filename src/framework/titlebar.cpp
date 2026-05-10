@@ -1,13 +1,21 @@
+/**
+ * @file titlebar.cpp
+ * @brief 标题栏实现
+ *
+ * @author ByteSpace团队
+ * @date 2024
+ */
 #include "titlebar.h"
+#include "baseframework.h"
 #include "ui_titlebar.h"
-#include <QMouseEvent>  // 添加这一行
+#include <QMouseEvent>
+#include <QEvent>
 
 TitleBar::TitleBar(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::TitleBar) {
     ui->setupUi(this);
 
-    // 为labelLogo安装事件过滤器
     ui->labelLogo->installEventFilter(this);
 
     connect(ui->btnMin, &QPushButton::clicked, this, [=]() {
@@ -17,13 +25,9 @@ TitleBar::TitleBar(QWidget *parent)
     });
 
     connect(ui->btnMax, &QPushButton::clicked, this, [=]() {
-        if (QWidget *window = qobject_cast<QWidget *>(parentWidget())) {
-            if (window->isMaximized()) {
-                window->showNormal();
-            }
-            else {
-                window->showMaximized();
-            }
+        if (auto *base = qobject_cast<BaseFramework*>(parentWidget())) {
+            base->toggleMaximize();
+            updateMaxButton();
         }
     });
 
@@ -33,35 +37,47 @@ TitleBar::TitleBar(QWidget *parent)
         }
     });
 
-    // 连接设置按钮的点击信号
     connect(ui->btnSPin, &QPushButton::clicked, this, &TitleBar::settingsButtonClicked);
+
+    updateMaxButton();
+}
+
+bool TitleBar::event(QEvent *e) {
+    if (e->type() == QEvent::ParentChange && parentWidget()) {
+        parentWidget()->installEventFilter(this);
+    }
+    return QWidget::event(e);
 }
 
 TitleBar::~TitleBar() {
     delete ui;
 }
 
-// 添加 eventFilter 实现
 bool TitleBar::eventFilter(QObject *watched, QEvent *event) {
     if (watched == ui->labelLogo && event->type() == QEvent::MouseButtonRelease) {
-        // 发送设置按钮点击信号
         emit settingsButtonClicked();
         return true;
+    }
+    if (watched == parentWidget() && event->type() == QEvent::WindowStateChange) {
+        updateMaxButton();
     }
     return QWidget::eventFilter(watched, event);
 }
 
-// 实现双击事件
 void TitleBar::mouseDoubleClickEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
-        if (QWidget *window = qobject_cast<QWidget *>(parentWidget())) {
-            if (window->isMaximized()) {
-                window->showNormal();
-            }
-            else {
-                window->showMaximized();
-            }
+        if (auto *base = qobject_cast<BaseFramework*>(parentWidget())) {
+            base->toggleMaximize();
+            updateMaxButton();
         }
     }
     QWidget::mouseDoubleClickEvent(event);
+}
+
+void TitleBar::updateMaxButton() {
+    bool maximized = false;
+    if (auto *base = qobject_cast<BaseFramework*>(parentWidget())) {
+        maximized = base->isMaximized() || base->isCustomMaximized();
+    }
+    ui->btnMax->setText(maximized ? QStringLiteral("\u2750") : QStringLiteral("\u25A1"));
 }

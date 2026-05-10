@@ -15,14 +15,17 @@ public:
     ~TitleBar();
 
 protected:
+    bool event(QEvent *event) override;
     bool eventFilter(QObject *watched, QEvent *event) override;
-    void mouseDoubleClickEvent(QMouseEvent *event) override; // 添加这一行
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 
 private:
+    void updateMaxButton();
+
     Ui::TitleBar *ui;
 
 signals:
-    void settingsButtonClicked(); // 添加设置按钮点击信号
+    void settingsButtonClicked();
 };
 
 #endif // TITLEBAR_H

@@ -1,11 +1,58 @@
 #include "baseframework.h"
 #include <QMouseEvent>
+#include <QShowEvent>
+#include <QScreen>
+#include <QGuiApplication>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <windowsx.h>
+#endif
 
 BaseFramework::BaseFramework(QWidget *parent) : QWidget(parent) {
-    setWindowFlags(Qt::FramelessWindowHint);  // 无边框
-    setAttribute(Qt::WA_Hover);               // 开启悬停事件
-    setMouseTracking(true);                   // 开启鼠标追踪
-    installEventFilter(this);                 // 安装事件过滤器
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_Hover);
+    setMouseTracking(true);
+    installEventFilter(this);
+}
+
+void BaseFramework::showEvent(QShowEvent *event) {
+    QWidget::showEvent(event);
+#ifdef Q_OS_WIN
+    HWND hwnd = reinterpret_cast<HWND>(winId());
+    SetWindowLongPtr(hwnd, GWL_STYLE,
+        GetWindowLongPtr(hwnd, GWL_STYLE) | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+#endif
+}
+
+void BaseFramework::toggleMaximize() {
+    if (isMaximized() || m_isCustomMaximized) {
+        m_isCustomMaximized = false;
+        if (m_normalGeometry.isValid()) {
+            setGeometry(m_normalGeometry);
+        } else {
+            showNormal();
+        }
+    } else {
+        m_normalGeometry = geometry();
+        m_isCustomMaximized = true;
+        QScreen *screen = QGuiApplication::primaryScreen();
+        if (screen) {
+            setGeometry(screen->availableGeometry());
+        } else {
+            showMaximized();
+        }
+    }
+}
+
+void BaseFramework::changeEvent(QEvent *event) {
+    if (event->type() == QEvent::WindowStateChange) {
+        if (isMaximized()) {
+            m_isCustomMaximized = false;
+        }
+        m_normalGeometry = normalGeometry();
+    }
+    QWidget::changeEvent(event);
 }
 
 BaseFramework::Region BaseFramework::getRegion(const QPoint &pos) {
@@ -258,6 +305,25 @@ void BaseFramework::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void BaseFramework::resizeEvent(QResizeEvent *event) {
-    // 调用基类实现
     QWidget::resizeEvent(event);
+}
+
+bool BaseFramework::nativeEvent(const QByteArray &eventType, void *message, qintptr *result) {
+#ifdef Q_OS_WIN
+    if (eventType == "windows_generic_MSG") {
+        MSG *msg = static_cast<MSG *>(message);
+        if (msg->message == WM_SYSCOMMAND) {
+            if (msg->wParam == SC_MINIMIZE) {
+                showMinimized();
+                *result = 0;
+                return true;
+            }
+        }
+    }
+#else
+    Q_UNUSED(eventType)
+    Q_UNUSED(message)
+    Q_UNUSED(result)
+#endif
+    return QWidget::nativeEvent(eventType, message, result);
 }
