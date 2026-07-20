@@ -71,12 +71,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 设置编译选项
 if(MSVC)
     add_compile_options(/W4 /utf-8 /Zc:__cplusplus /permissive-)
-    add_compile_options($<$<CONFIG:Release>:/O2 /GL /GS- /MT>)
-    add_link_options($<$<CONFIG:Release>:/LTCG /OPT:REF /OPT:ICF>)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /GL /GS- /MT")
+    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /LTCG /OPT:REF /OPT:ICF")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG /OPT:REF /OPT:ICF")
 else()
     add_compile_options(-Wall -Wextra -Wpedantic)
-    add_compile_options($<$<CONFIG:Release>:-O2 -s>)
-    add_link_options($<$<CONFIG:Release>:-s>)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -s")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -s")
 endif()
 
 # 设置平台特定选项
