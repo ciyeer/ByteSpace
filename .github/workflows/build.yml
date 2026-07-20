@@ -18,7 +18,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: '6.5.*'
-          modules: 'qtnetworkauth'
+          modules: 'qtserialport'
 
       - name: Configure CMake
         run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
