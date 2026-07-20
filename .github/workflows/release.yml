@@ -25,14 +25,14 @@ jobs:
       - name: Build
         run: cmake --build build --config Release
 
-      - name: Package
+      - name: Package (NSIS)
         run: |
           cd build
           cmake --install . --config Release --prefix install
-          cpack -G ZIP
+          cpack -G NSIS
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v2
         with:
-          files: build/ByteSpace-*-win64.zip
+          files: build/ByteSpace-*-win64.exe
           generate_release_notes: true
