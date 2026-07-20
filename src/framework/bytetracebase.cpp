@@ -77,6 +77,7 @@ void BytetraceBase::connections() {
 }
 
 void BytetraceBase::handleOpenCloseSerialPort() {
+    QMutexLocker locker(&m_serialMutex);
     if (m_isOpen) {
         StateManager::instance().changeState(AppState::Disconnecting);
         m_serialPortManager->closePort();
@@ -110,6 +111,7 @@ void BytetraceBase::handleOpenCloseSerialPort() {
 }
 
 void BytetraceBase::onTaskCompleted() {
+    QMutexLocker locker(&m_serialMutex);
     if (m_serialPortManager->isOpen()) {
         m_isOpen = true;
         updateUI(true);
@@ -130,9 +132,16 @@ void BytetraceBase::onTaskFailed() {
 }
 
 void BytetraceBase::onSerialPortError(QSerialPort::SerialPortError error) {
-    QString errorMsg = ErrorHandler::instance().getErrorMessage(error);
+    if (error == QSerialPort::NoError) {
+        return;
+    }
 
-    if (error == QSerialPort::ResourceError) {
+    ErrorHandler::instance().handleSerialPortError(error);
+
+    if (error == QSerialPort::ResourceError
+        || error == QSerialPort::WriteError
+        || error == QSerialPort::ReadError) {
+        QMutexLocker locker(&m_serialMutex);
         m_serialPortManager->closePort();
         m_isOpen = false;
         updateUI(false);
@@ -185,6 +194,7 @@ void BytetraceBase::onClearRecvBuffer() {
 }
 
 void BytetraceBase::onTimeout() {
+    QMutexLocker locker(&m_serialMutex);
     if (m_isOpen && !m_serialPortManager->isOpen()) {
         LogUtils::logMessage("Serial port unexpectedly closed. Attempting recovery...", LOG::LOG_WARNING);
         m_isOpen = false;

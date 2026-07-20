@@ -7,6 +7,7 @@
  */
 #include "framework.h"
 #include "utils/configmanager.h"
+#include "utils/errorhandler.h"
 #include "./ui_framework.h"
 
 // 在 Framework 类的构造函数中添加
@@ -35,6 +36,12 @@ Framework::Framework(QWidget *parent)
 
     // 连接 TitleBar 中的设置按钮信号到切换界面的槽函数
     connect(m_pTitleBar, &TitleBar::settingsButtonClicked, this, &Framework::switchWidget);
+
+    // 连接 ErrorHandler 错误信号到 StatusBar
+    connect(&ErrorHandler::instance(), &ErrorHandler::errorOccurred,
+            this, [this](const QString& msg, ErrorType, ErrorLevel) {
+                m_pStatusBar->onRecvMessage(msg);
+            });
 
     // 恢复窗口几何信息
     if (ConfigManager::instance().rememberWindowGeometry()) {

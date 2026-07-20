@@ -85,6 +85,64 @@ void SerialPortConfigurator::initialize(QComboBox *comBoxPortName, QComboBox *co
     }
     // 设置初始UI状态（例如禁用串口设置，直到选择端口）
     m_isInitialized = true;
+
+    // 从 ConfigManager 恢复上次保存的配置
+    QString savedPortName = ConfigManager::instance().portName();
+    int savedBaudRate = ConfigManager::instance().baudRate();
+    int savedDataBits = ConfigManager::instance().dataBits();
+    int savedStopBits = ConfigManager::instance().stopBits();
+    QString savedParity = ConfigManager::instance().parity();
+    QString savedFlowControl = ConfigManager::instance().flowControl();
+
+    // 恢复端口名（如果仍可用）
+    int portIdx = comBoxPortName->findText(savedPortName);
+    if (portIdx >= 0) {
+        comBoxPortName->setCurrentIndex(portIdx);
+    }
+
+    // 恢复波特率
+    int baudIdx = comBoxBaudRate->findData(savedBaudRate);
+    if (baudIdx >= 0) {
+        comBoxBaudRate->setCurrentIndex(baudIdx);
+    }
+
+    // 恢复数据位
+    int dataIdx = comBoxDataBits->findData(static_cast<QSerialPort::DataBits>(savedDataBits));
+    if (dataIdx >= 0) {
+        comBoxDataBits->setCurrentIndex(dataIdx);
+    }
+
+    // 恢复校验位
+    QSerialPort::Parity savedParityEnum = QSerialPort::NoParity;
+    if (savedParity == "None") savedParityEnum = QSerialPort::NoParity;
+    else if (savedParity == "Even") savedParityEnum = QSerialPort::EvenParity;
+    else if (savedParity == "Odd") savedParityEnum = QSerialPort::OddParity;
+    else if (savedParity == "Mark") savedParityEnum = QSerialPort::MarkParity;
+    else if (savedParity == "Space") savedParityEnum = QSerialPort::SpaceParity;
+    int parityIdx = comBoxParity->findData(savedParityEnum);
+    if (parityIdx >= 0) {
+        comBoxParity->setCurrentIndex(parityIdx);
+    }
+
+    // 恢复停止位
+    QSerialPort::StopBits savedStopBitsEnum;
+    if (savedStopBits == 1) savedStopBitsEnum = QSerialPort::OneStop;
+    else if (savedStopBits == 3) savedStopBitsEnum = QSerialPort::OneAndHalfStop;
+    else savedStopBitsEnum = QSerialPort::TwoStop;
+    int stopIdx = comBoxStopBits->findData(savedStopBitsEnum);
+    if (stopIdx >= 0) {
+        comBoxStopBits->setCurrentIndex(stopIdx);
+    }
+
+    // 恢复流控制
+    QSerialPort::FlowControl savedFlowEnum = QSerialPort::NoFlowControl;
+    if (savedFlowControl == "NONE") savedFlowEnum = QSerialPort::NoFlowControl;
+    else if (savedFlowControl == "RTS/CTS") savedFlowEnum = QSerialPort::HardwareControl;
+    else if (savedFlowControl == "XON/XOFF") savedFlowEnum = QSerialPort::SoftwareControl;
+    int flowIdx = comBoxFlowControl->findData(savedFlowEnum);
+    if (flowIdx >= 0) {
+        comBoxFlowControl->setCurrentIndex(flowIdx);
+    }
 }
 
 void SerialPortConfigurator::configure(QComboBox *comBoxPortName, QComboBox *comBoxBaudRate,

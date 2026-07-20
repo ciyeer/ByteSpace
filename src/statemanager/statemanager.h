@@ -85,6 +85,9 @@ private:
     // 初始化函数
     void initializeTransitions();
     void initializeStateStrings();
+
+    // 内部无锁版本（调用方必须持有 m_mutex）
+    bool canTransitionToLocked(AppState targetState) const;
     
     // 成员变量
     AppState m_currentState;

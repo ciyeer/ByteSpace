@@ -1,4 +1,5 @@
 #include "errorhandler.h"
+#include <QMutexLocker>
 
 // 梅耶尔斯单例实现
 ErrorHandler& ErrorHandler::instance() {
@@ -32,39 +33,44 @@ void ErrorHandler::handleSerialPortError(QSerialPort::SerialPortError error) {
     if (error == QSerialPort::NoError) {
         return;
     }
-    
+
     QString errorMessage = getErrorMessage(error);
     handleError(ErrorType::SerialPort, errorMessage, ErrorLevel::Error);
 }
 
 void ErrorHandler::handleError(ErrorType type, const QString& message, ErrorLevel level) {
+    QMutexLocker locker(&m_mutex);
     m_lastErrorMessage = message;
     m_lastErrorType = type;
     m_lastErrorLevel = level;
     m_hasActiveError = true;
-    
+
     emit errorOccurred(message, type, level);
 }
 
 QString ErrorHandler::getErrorMessage(QSerialPort::SerialPortError error) const {
+    QMutexLocker locker(&m_mutex);
     return m_serialPortErrorMessages.value(error, "未知串口错误");
 }
 
 QString ErrorHandler::getLastError() const {
+    QMutexLocker locker(&m_mutex);
     return m_lastErrorMessage;
 }
 
 bool ErrorHandler::hasActiveError() const {
+    QMutexLocker locker(&m_mutex);
     return m_hasActiveError;
 }
 
 void ErrorHandler::clearErrors() {
+    QMutexLocker locker(&m_mutex);
     if (m_hasActiveError) {
         m_lastErrorMessage.clear();
         m_lastErrorType = ErrorType::Unknown;
         m_lastErrorLevel = ErrorLevel::Info;
         m_hasActiveError = false;
-        
+
         emit errorCleared();
     }
 }

@@ -34,20 +34,23 @@ void StateManager::initializeStateStrings() {
 }
 
 bool StateManager::changeState(AppState newState) {
-    QMutexLocker locker(&m_mutex);
-    
-    // 检查状态转换是否允许
-    if (!canTransitionTo(newState)) {
-        return false;
+    AppState oldState;
+    bool canTransition;
+
+    {
+        QMutexLocker locker(&m_mutex);
+        canTransition = canTransitionToLocked(newState);
+        if (canTransition) {
+            oldState = m_currentState;
+            m_currentState = newState;
+        }
     }
-    // 保存旧状态
-    AppState oldState = m_currentState;
-    // 更新状态
-    m_currentState = newState;
-    // 发送状态变化信号
-    emit stateChanged(oldState, newState);
-    
-    return true;
+
+    if (canTransition) {
+        emit stateChanged(oldState, newState);
+    }
+
+    return canTransition;
 }
 
 AppState StateManager::currentState() const {
@@ -62,12 +65,15 @@ QString StateManager::currentStateString() const {
 
 bool StateManager::canTransitionTo(AppState targetState) const {
     QMutexLocker locker(&m_mutex);
-    
+    return canTransitionToLocked(targetState);
+}
+
+bool StateManager::canTransitionToLocked(AppState targetState) const {
     // 如果目标状态与当前状态相同，则允许转换
     if (targetState == m_currentState) {
         return true;
     }
-    
+
     // 检查目标状态是否在允许的转换列表中
     return m_allowedTransitions.value(m_currentState).contains(targetState);
 }

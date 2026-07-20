@@ -1,31 +1,31 @@
 ## 1. P0 — 功能性 Bug 修复
 
 ### 1.1 UpdateManager 重复连接 (#1)
-- [ ] 1.1.1 将 `checkForUpdate()` 中的 connect 改为连接 reply 的 finished 信号（非 networkManager），或添加 disconnect 守卫
-- [ ] 1.1.2 验证多次调用 `checkForUpdate()` 后 `onUpdateCheckFinished` 只触发一次
+- [x] 1.1.1 将 `checkForUpdate()` 中的 connect 改为连接 reply 的 finished 信号（非 networkManager），或添加 disconnect 守卫
+- [x] 1.1.2 验证多次调用 `checkForUpdate()` 后 `onUpdateCheckFinished` 只触发一次
 
 ### 1.2 StateManager 持锁 emit 死锁修复 (#2)
-- [ ] 1.2.1 重构 `changeState()`：在锁作用域内拷贝状态值，释放锁后再 emit
-- [ ] 1.2.2 验证同线程直连槽回调 StateManager 方法不触发死锁
+- [x] 1.2.1 重构 `changeState()`：在锁作用域内拷贝状态值，释放锁后再 emit
+- [x] 1.2.2 验证同线程直连槽回调 StateManager 方法不触发死锁
 
 ### 1.3 ErrorHandler 线程安全 (#3)
-- [ ] 1.3.1 为 ErrorHandler 添加 `mutable QMutex m_mutex` 成员
-- [ ] 1.3.2 在 `handleError()`、`handleSerialPortError()`、`clearErrors()`、`getLastError()`、`hasActiveError()` 中添加 `QMutexLocker`
-- [ ] 1.3.3 验证多线程并发调用无数据竞争
+- [x] 1.3.1 为 ErrorHandler 添加 `mutable QMutex m_mutex` 成员
+- [x] 1.3.2 在 `handleError()`、`handleSerialPortError()`、`clearErrors()`、`getLastError()`、`hasActiveError()` 中添加 `QMutexLocker`
+- [x] 1.3.3 验证多线程并发调用无数据竞争
 
 ### 1.4 BytetraceBase 状态访问加锁 (#4)
-- [ ] 1.4.1 审查所有 `m_isOpen` 和 `m_serialPortManager` 的读写点
-- [ ] 1.4.2 在 `handleOpenCloseSerialPort()`、`onTimeout()`、`onTaskCompleted()` 中为关键状态访问添加 `QMutexLocker`
+- [x] 1.4.1 审查所有 `m_isOpen` 和 `m_serialPortManager` 的读写点
+- [x] 1.4.2 在 `handleOpenCloseSerialPort()`、`onTimeout()`、`onTaskCompleted()` 中为关键状态访问添加 `QMutexLocker`
 
 ### 1.5 错误处理链路打通 (#5)
-- [ ] 1.5.1 在 `BytetraceBase::onSerialPortError()` 中处理所有错误类型（WriteError、ReadError、OpenError 等），不再仅处理 ResourceError
-- [ ] 1.5.2 在 `onSerialPortError()` 中调用 `ErrorHandler::instance().handleSerialPortError(error)`
-- [ ] 1.5.3 在 StatusBar 或合适位置展示错误信息（连接 `ErrorHandler::errorOccurred` 信号）
+- [x] 1.5.1 在 `BytetraceBase::onSerialPortError()` 中处理所有错误类型（WriteError、ReadError、OpenError 等），不再仅处理 ResourceError
+- [x] 1.5.2 在 `onSerialPortError()` 中调用 `ErrorHandler::instance().handleSerialPortError(error)`
+- [x] 1.5.3 在 StatusBar 或合适位置展示错误信息（连接 `ErrorHandler::errorOccurred` 信号）
 
 ### 1.6 串口参数配置回读 (#6)
-- [ ] 1.6.1 在 `SerialPortConfigurator::initialize()` 填充完 ComboBox 后，从 ConfigManager 读取上次保存的参数
-- [ ] 1.6.2 如果上次保存的端口名仍可用则选中，否则选中第一个可用端口
-- [ ] 1.6.3 验证重启应用后串口参数自动恢复
+- [x] 1.6.1 在 `SerialPortConfigurator::initialize()` 填充完 ComboBox 后，从 ConfigManager 读取上次保存的参数
+- [x] 1.6.2 如果上次保存的端口名仍可用则选中，否则选中第一个可用端口
+- [x] 1.6.3 验证重启应用后串口参数自动恢复
 
 ## 2. P1 — 性能优化
 

@@ -14,6 +14,7 @@
 #include <QSerialPort>
 #include <QString>
 #include <QMap>
+#include <QMutex>
 
 // 定义错误类型枚举
 enum class ErrorType {
@@ -64,6 +65,7 @@ private:
     ErrorHandler& operator=(const ErrorHandler&) = delete;
     
     // 错误状态管理
+    mutable QMutex m_mutex;
     QString m_lastErrorMessage;
     ErrorType m_lastErrorType;
     ErrorLevel m_lastErrorLevel;

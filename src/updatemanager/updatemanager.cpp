@@ -28,8 +28,10 @@ void UpdateManager::checkForUpdate() {
     QUrl url(updateUrl);
     QNetworkRequest request(url);
 
-    connect(networkManager, &QNetworkAccessManager::finished, this, &UpdateManager::onUpdateCheckFinished);
-    networkManager->get(request);
+    QNetworkReply* reply = networkManager->get(request);
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        onUpdateCheckFinished(reply);
+    });
 }
 
 void UpdateManager::onUpdateCheckFinished(QNetworkReply* reply) {
