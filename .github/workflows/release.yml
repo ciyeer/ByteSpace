@@ -27,6 +27,7 @@ jobs:
 
       - name: Package (NSIS)
         run: |
+          $env:PATH = "C:\Program Files (x86)\NSIS\Bin;$env:PATH"
           cd build
           cpack -G NSIS -C Release
 
