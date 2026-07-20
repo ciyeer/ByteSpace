@@ -70,11 +70,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 设置编译选项
 if(MSVC)
-    add_compile_options(/W4 /WX /utf-8 /Zc:__cplusplus /permissive-)
-    add_compile_options($<$<CONFIG:Release>:/O2>)
+    add_compile_options(/W4 /utf-8 /Zc:__cplusplus /permissive-)
+    add_compile_options($<$<CONFIG:Release>:/O2 /GL /GS- /MT>)
+    add_link_options($<$<CONFIG:Release>:/LTCG /OPT:REF /OPT:ICF>)
 else()
     add_compile_options(-Wall -Wextra -Wpedantic)
-    add_compile_options($<$<CONFIG:Release>:-O2>)
+    add_compile_options($<$<CONFIG:Release>:-O2 -s>)
+    add_link_options($<$<CONFIG:Release>:-s>)
 endif()
 
 # 设置平台特定选项
@@ -137,13 +139,51 @@ set_target_properties(ByteSpace PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-# 安装配置
-include(GNUInstallDirs)
-install(TARGETS ByteSpace
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-
 # Qt6 最终化
 qt_finalize_executable(ByteSpace)
+
+# =============================================================================
+# 打包与发布
+# =============================================================================
+
+# windeployqt — 自动收集 Qt 运行时依赖
+find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt6_install_prefix}/bin")
+if(WINDEPLOYQT_EXECUTABLE AND WIN32)
+    set(DEPLOY_DIR "${CMAKE_BINARY_DIR}/deploy")
+
+    add_custom_command(TARGET ByteSpace POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E echo "Running windeployqt..."
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "${DEPLOY_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${DEPLOY_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ByteSpace> "${DEPLOY_DIR}/"
+        COMMAND ${WINDEPLOYQT_EXECUTABLE}
+            --dir "${DEPLOY_DIR}"
+            --no-translations
+            --no-system-d3d-compiler
+            --no-opengl-sw
+            --no-compiler-runtime
+            "$<TARGET_FILE:ByteSpace>"
+        COMMENT "Deploying Qt runtime dependencies"
+    )
+
+    install(DIRECTORY "${DEPLOY_DIR}/" DESTINATION . COMPONENT Runtime)
+endif()
+
+# 安装可执行文件
+install(TARGETS ByteSpace
+    RUNTIME DESTINATION . COMPONENT Runtime
+    BUNDLE DESTINATION . COMPONENT Runtime
+)
+
+# CPack 配置
+set(CPACK_PACKAGE_NAME "ByteSpace")
+set(CPACK_PACKAGE_VERSION ${BYTESPACE_VERSION})
+set(CPACK_PACKAGE_VENDOR "Ciyeer")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Serial Port Debug Tool")
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-win64")
+set(CPACK_GENERATOR "ZIP")
+set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
+set(CPACK_COMPONENTS_ALL Runtime)
+set(CPACK_VERBATIM_VARIABLES YES)
+
+include(CPack)
