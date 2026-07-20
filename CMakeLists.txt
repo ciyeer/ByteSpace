@@ -70,9 +70,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 设置编译选项
 if(MSVC)
-    add_compile_options(/W4 /WX /O2 /utf-8 /Zc:__cplusplus /permissive-)
+    add_compile_options(/W4 /WX /utf-8 /Zc:__cplusplus /permissive-)
+    add_compile_options($<$<CONFIG:Release>:/O2>)
 else()
-    add_compile_options(-Wall -Wextra -Wpedantic -O2)
+    add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options($<$<CONFIG:Release>:-O2>)
 endif()
 
 # 设置平台特定选项
