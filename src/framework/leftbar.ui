@@ -559,44 +559,6 @@
           </item>
          </layout>
         </item>
-        <item row="1" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_13">
-          <item>
-           <widget class="QRadioButton" name="radioButton_13">
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>9</pointsize>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>HEX发送</string>
-            </property>
-            <property name="autoExclusive">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="recvHexBtn_7">
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>9</pointsize>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>HEX显示</string>
-            </property>
-            <property name="autoExclusive">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
         <item row="7" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <property name="spacing">
@@ -674,7 +636,7 @@
         <item row="0" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QRadioButton" name="radioButton_7">
+           <widget class="QRadioButton" name="hexSendBtn">
             <property name="font">
              <font>
               <family>微软雅黑</family>
@@ -691,7 +653,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="recvHexBtn">
+           <widget class="QRadioButton" name="hexDisplayBtn">
             <property name="font">
              <font>
               <family>微软雅黑</family>

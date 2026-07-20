@@ -13,6 +13,9 @@ public:
     bool write(QSerialPort* serialPort, const QByteArray &data);
     QByteArray read(QSerialPort* serialPort);
     bool isOpen(const QSerialPort* serialPort) const;
+
+private:
+    bool validatePort(const QSerialPort* serialPort, QIODevice::OpenModeFlag mode) const;
 };
 
 #endif // SERIALPORTOPERATOR_H

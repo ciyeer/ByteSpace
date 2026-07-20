@@ -21,4 +21,4 @@ QComboBox* LeftBar::stopBitsComboBox() const { return ui->stopBitsComboBox; }
 QComboBox* LeftBar::flowControlComboBox() const { return ui->flowControlComboBox; }
 QPushButton* LeftBar::openCloseButton() const { return ui->openCloseButton; }
 QLabel* LeftBar::transferLabel() const { return ui->transferLabel; }
-QRadioButton* LeftBar::recvHexBtn() const { return ui->recvHexBtn; }
+QRadioButton* LeftBar::hexDisplayBtn() const { return ui->hexDisplayBtn; }

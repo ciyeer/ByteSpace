@@ -279,45 +279,23 @@ bool SerialPortConfigurator::configureFromSettings() {
     int dataBits = ConfigManager::instance().dataBits();
     int stopBits = ConfigManager::instance().stopBits();
     QString parityStr = ConfigManager::instance().parity();
-    
+
     // 设置串口参数
     m_serialPort->setPortName(portName);
     m_serialPort->setBaudRate(baudRate);
-    
-    // 使用已有的映射函数设置数据位
-    QSerialPort::DataBits dataBitsEnum;
-    switch (dataBits) {
-        case 5: dataBitsEnum = QSerialPort::Data5; break;
-        case 6: dataBitsEnum = QSerialPort::Data6; break;
-        case 7: dataBitsEnum = QSerialPort::Data7; break;
-        default: dataBitsEnum = QSerialPort::Data8; break;
-    }
-    m_serialPort->setDataBits(dataBitsEnum);
-    
-    // 使用已有的映射函数设置停止位
-    QSerialPort::StopBits stopBitsEnum;
-    switch (stopBits) {
-        case 2: stopBitsEnum = QSerialPort::TwoStop; break;
-        case 3: stopBitsEnum = QSerialPort::OneAndHalfStop; break;
-        default: stopBitsEnum = QSerialPort::OneStop; break;
-    }
-    m_serialPort->setStopBits(stopBitsEnum);
-    
-    // 设置校验位
-    QSerialPort::Parity parityEnum = QSerialPort::NoParity;
-    if (parityStr == "Even") {
-        parityEnum = QSerialPort::EvenParity;
-    }
-    else if (parityStr == "Odd") {
-        parityEnum = QSerialPort::OddParity;
-    }
-    else if (parityStr == "Space") {
-        parityEnum = QSerialPort::SpaceParity;
-    }
-    else if (parityStr == "Mark") {
-        parityEnum = QSerialPort::MarkParity;
-    }
-    m_serialPort->setParity(parityEnum);
-    
+
+    // 复用 mapDataBits（ConfigManager 存的是 bits 数值，ComboBox index = 8 - value）
+    int dataIdx = 8 - dataBits;
+    m_serialPort->setDataBits(mapDataBits(dataIdx));
+
+    // 复用 mapStopBits
+    static const QHash<int, int> stopBitsToIdx = {{1, 0}, {3, 1}, {2, 2}};
+    m_serialPort->setStopBits(mapStopBits(stopBitsToIdx.value(stopBits, 0)));
+
+    // 复用 mapParity（通过字符串名找到 ComboBox index）
+    static const QStringList parityOrder = {"NONE", "ODD", "EVEN", "MARK", "SPACE"};
+    int parityIdx = parityOrder.indexOf(parityStr.toUpper());
+    m_serialPort->setParity(mapParity(parityIdx >= 0 ? parityIdx : 0));
+
     return true;
 }

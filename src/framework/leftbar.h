@@ -26,7 +26,7 @@ public:
     QComboBox* flowControlComboBox() const;
     QPushButton* openCloseButton() const;
     QLabel* transferLabel() const;
-    QRadioButton* recvHexBtn() const;
+    QRadioButton* hexDisplayBtn() const;
 
 private:
     Ui::LeftBar *ui;

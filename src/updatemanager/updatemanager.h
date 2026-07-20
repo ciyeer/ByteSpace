@@ -24,7 +24,7 @@ public:
     void checkForUpdate();
 
 private:
-    QSystemTrayIcon* trayIcon;
+    QSystemTrayIcon* m_pTrayIcon;
     QNetworkAccessManager* networkManager;
     QProgressDialog* progressDialog;
     QString updateUrl;

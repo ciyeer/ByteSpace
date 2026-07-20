@@ -17,7 +17,7 @@
 #include <QCoreApplication>
 
 UpdateManager::UpdateManager(QSystemTrayIcon* trayIcon, QObject* parent)
-    : QObject(parent), trayIcon(trayIcon) {
+    : QObject(parent), m_pTrayIcon(trayIcon) {
     networkManager = new QNetworkAccessManager(this);
     progressDialog = new QProgressDialog("Downloading update...", "Cancel", 0, 100, nullptr);
     progressDialog->setWindowModality(Qt::WindowModal);

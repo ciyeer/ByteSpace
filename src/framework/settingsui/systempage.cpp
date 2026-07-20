@@ -1,5 +1,4 @@
 #include "systempage.h"
-#include "ui_systempage.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QGroupBox>
@@ -8,9 +7,7 @@
 #include <QPushButton>
 
 SystemPage::SystemPage(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::SystemPage) {
-    ui->setupUi(this);
+    : QWidget(parent) {
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(30, 30, 30, 30);
     layout->setSpacing(20);
@@ -62,6 +59,4 @@ SystemPage::SystemPage(QWidget *parent)
     layout->addStretch();
 }
 
-SystemPage::~SystemPage() {
-    delete ui;
-}
+SystemPage::~SystemPage() = default;

@@ -150,6 +150,15 @@ QWidget#LeftBar QPushButton#openCloseButton {
     min-height: 40px;
     max-width: 95px;
     max-height: 40px;
+    background-color: #4CAF50;
+}
+
+QWidget#LeftBar QPushButton#openCloseButton[portOpen="true"] {
+    background-color: #FF6B6B;
+}
+
+QWidget#LeftBar QPushButton#openCloseButton[portOpen="false"] {
+    background-color: #4CAF50;
 }
 
 /* ---- LeftBar RadioButtons ---- */

@@ -44,7 +44,6 @@ BytetraceBase::BytetraceBase(QWidget *parent)
     m_portMonitorTimer = new QTimer(this);
     m_portMonitorTimer->setInterval(1000);
     connect(m_portMonitorTimer, &QTimer::timeout, this, &BytetraceBase::onTimeout);
-    m_portMonitorTimer->start();
 
     initTransferAnimation();
     connections();
@@ -152,14 +151,11 @@ void BytetraceBase::onSerialPortError(QSerialPort::SerialPortError error) {
 void BytetraceBase::onSerialDataReceived(const QByteArray& rawData) {
     LogUtils::logMessage(QString("接收到 %1 字节数据").arg(rawData.size()), LOG::LOG_INFO);
 
-    QString hexData;
-    for (int i = 0; i < rawData.size(); ++i) {
-        hexData += QString("%1 ").arg(static_cast<unsigned char>(rawData[i]), 2, 16, QChar('0'));
-    }
-    LogUtils::logMessage(QString("接收数据内容(HEX): %1").arg(hexData.trimmed()), LOG::LOG_DEBUG);
+    QString hexData = QString::fromLatin1(rawData.toHex(' '));
+    LogUtils::logMessage(QString("接收数据内容(HEX): %1").arg(hexData), LOG::LOG_DEBUG);
 
-    if (m_pLeftBar->recvHexBtn()->isChecked()) {
-        m_pRecvWidget->recvArea()->append(hexData.trimmed());
+    if (m_pLeftBar->hexDisplayBtn()->isChecked()) {
+        m_pRecvWidget->recvArea()->append(hexData);
     } else {
         QString textData = QString::fromUtf8(rawData);
         m_pRecvWidget->recvArea()->append(textData);
@@ -224,9 +220,9 @@ void BytetraceBase::onTimeout() {
 }
 
 void BytetraceBase::updateUI(bool isOpen) {
+    QPushButton* btn = m_pLeftBar->openCloseButton();
     if (isOpen) {
-        m_pLeftBar->openCloseButton()->setText("关闭串口");
-        m_pLeftBar->openCloseButton()->setStyleSheet("background-color: #FF6B6B;");
+        btn->setText("关闭串口");
 
         m_pLeftBar->portComboBox()->setEnabled(false);
         m_pLeftBar->baudrateComboBox()->setEnabled(false);
@@ -236,9 +232,9 @@ void BytetraceBase::updateUI(bool isOpen) {
         m_pLeftBar->flowControlComboBox()->setEnabled(false);
 
         m_pSendWidget->dataSendBtn()->setEnabled(true);
+        m_portMonitorTimer->start();
     } else {
         m_pLeftBar->openCloseButton()->setText("打开串口");
-        m_pLeftBar->openCloseButton()->setStyleSheet("background-color: #4CAF50;");
 
         m_pLeftBar->portComboBox()->setEnabled(true);
         m_pLeftBar->baudrateComboBox()->setEnabled(true);
@@ -248,7 +244,12 @@ void BytetraceBase::updateUI(bool isOpen) {
         m_pLeftBar->flowControlComboBox()->setEnabled(true);
 
         m_pSendWidget->dataSendBtn()->setEnabled(false);
+        m_portMonitorTimer->stop();
     }
+
+    btn->setProperty("portOpen", isOpen);
+    btn->style()->unpolish(btn);
+    btn->style()->polish(btn);
 }
 
 void BytetraceBase::sendData(const QByteArray& rawData) {

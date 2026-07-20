@@ -3,6 +3,22 @@
 
 SerialPortOperator::SerialPortOperator(QObject *parent) : QObject(parent) {}
 
+bool SerialPortOperator::validatePort(const QSerialPort* serialPort, QIODevice::OpenModeFlag mode) const {
+    if (!serialPort) {
+        qWarning() << "Serial port pointer is null";
+        return false;
+    }
+    if (!serialPort->isOpen()) {
+        qWarning() << "Serial port is not open:" << serialPort->portName();
+        return false;
+    }
+    if (!(serialPort->openMode() & mode)) {
+        qWarning() << "Serial port does not support" << mode << ":" << serialPort->portName();
+        return false;
+    }
+    return true;
+}
+
 bool SerialPortOperator::open(QSerialPort* serialPort) {
     if (!serialPort) {
         qWarning() << "Serial port pointer is null";
@@ -34,13 +50,7 @@ void SerialPortOperator::close(QSerialPort* serialPort) {
 }
 
 bool SerialPortOperator::write(QSerialPort* serialPort, const QByteArray &data) {
-    if (!serialPort) {
-        qWarning() << "Serial port pointer is null";
-        return false;
-    }
-
-    if (!serialPort->isOpen() || !serialPort->isWritable()) {
-        qWarning() << "Serial port is not open or not writable:" << serialPort->portName();
+    if (!validatePort(serialPort, QIODevice::WriteOnly)) {
         return false;
     }
 
@@ -60,13 +70,7 @@ bool SerialPortOperator::write(QSerialPort* serialPort, const QByteArray &data) 
 }
 
 QByteArray SerialPortOperator::read(QSerialPort* serialPort) {
-    if (!serialPort) {
-        qWarning() << "Serial port pointer is null";
-        return QByteArray();
-    }
-
-    if (!serialPort->isOpen() || !serialPort->isReadable()) {
-        qWarning() << "Serial port is not open or not readable:" << serialPort->portName();
+    if (!validatePort(serialPort, QIODevice::ReadOnly)) {
         return QByteArray();
     }
 
