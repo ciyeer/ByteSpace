@@ -34,7 +34,7 @@ void StateManager::initializeStateStrings() {
 }
 
 bool StateManager::changeState(AppState newState) {
-    AppState oldState;
+    AppState oldState = AppState::Idle;
     bool canTransition;
 
     {
