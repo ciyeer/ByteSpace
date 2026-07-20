@@ -28,8 +28,7 @@ jobs:
       - name: Package (NSIS)
         run: |
           cd build
-          cmake --install . --config Release --prefix install
-          cpack -G NSIS
+          cpack -G NSIS -C Release
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v2

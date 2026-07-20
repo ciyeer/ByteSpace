@@ -148,8 +148,11 @@ qt_finalize_executable(ByteSpace)
 # =============================================================================
 
 # windeployqt — 自动收集 Qt 运行时依赖
-find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt6_install_prefix}/bin")
+find_program(WINDEPLOYQT_EXECUTABLE windeployqt
+    HINTS "$ENV{QT_ROOT_DIR}/bin" "${Qt6_DIR}/../../../bin"
+)
 if(WINDEPLOYQT_EXECUTABLE AND WIN32)
+    message(STATUS "Found windeployqt: ${WINDEPLOYQT_EXECUTABLE}")
     set(DEPLOY_DIR "${CMAKE_BINARY_DIR}/deploy")
 
     add_custom_command(TARGET ByteSpace POST_BUILD
@@ -168,6 +171,21 @@ if(WINDEPLOYQT_EXECUTABLE AND WIN32)
     )
 
     install(DIRECTORY "${DEPLOY_DIR}/" DESTINATION . COMPONENT Runtime)
+else()
+    message(WARNING "windeployqt not found — package will lack Qt DLLs")
+endif()
+
+# NSIS 查找
+if(WIN32)
+    find_program(NSIS_EXECUTABLE makensis
+        HINTS "C:/Program Files (x86)/NSIS"
+              "$ENV{PROGRAMFILES(X86)}/NSIS"
+    )
+    if(NSIS_EXECUTABLE)
+        message(STATUS "Found NSIS: ${NSIS_EXECUTABLE}")
+    else()
+        message(WARNING "NSIS not found — installer cannot be created")
+    endif()
 endif()
 
 # 安装可执行文件
