@@ -179,7 +179,6 @@ endif()
 if(WIN32)
     find_program(NSIS_EXECUTABLE makensis
         HINTS "C:/Program Files (x86)/NSIS"
-              "$ENV{PROGRAMFILES(X86)}/NSIS"
     )
     if(NSIS_EXECUTABLE)
         message(STATUS "Found NSIS: ${NSIS_EXECUTABLE}")
