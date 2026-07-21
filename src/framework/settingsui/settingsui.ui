@@ -54,11 +54,6 @@
      </item>
      <item>
       <property name="text">
-       <string>账号/会员</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>外观</string>
       </property>
      </item>

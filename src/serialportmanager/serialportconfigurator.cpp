@@ -29,17 +29,26 @@ void SerialPortConfigurator::initialize(QComboBox *comBoxPortName, QComboBox *co
         comBoxPortName->addItem(portInfo.portName());
     }
 
-    // 波特率选项
+    // 波特率选项（覆盖常用速率）
     QList<QPair<QString, int>> baudRates {
+        {"1200", 1200},
+        {"2400", 2400},
+        {"4800", 4800},
         {"9600", QSerialPort::Baud9600},
+        {"14400", 14400},
         {"19200", QSerialPort::Baud19200},
         {"38400", QSerialPort::Baud38400},
         {"57600", QSerialPort::Baud57600},
-        {"115200", QSerialPort::Baud115200}
+        {"115200", QSerialPort::Baud115200},
+        {"230400", 230400},
+        {"460800", 460800},
+        {"921600", 921600}
     };
     for (const auto &baudRate : baudRates) {
         comBoxBaudRate->addItem(baudRate.first, baudRate.second);
     }
+    // 允许用户输入自定义波特率
+    comBoxBaudRate->setEditable(true);
 
     // 数据位选项
     QList<QPair<QString, QSerialPort::DataBits>> dataBits {

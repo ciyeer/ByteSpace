@@ -49,7 +49,7 @@
 - [x] 3.2.1 从 `sendwidget.ui` 中删除 pushButton（单条发送）、pushButton_2（多条发送）、pushButton_3（协议传输）
 - [x] 3.2.2 从 `sendwidget.ui` 中删除 stopSendBtn
 - [x] 3.2.3 从 `sendwidget.ui` 中删除 page_2 到 page_7 空占位页
-- [ ] 3.2.4 验证编译通过且界面布局正常
+- [x] 3.2.4 验证编译通过且界面布局正常
 
 ### 3.3 LeftBar 重复控件清理 (#12)
 - [x] 3.3.1 从 `leftbar.ui` 中删除 radioButton_13（重复的 HEX发送）和 recvHexBtn_7（重复的 HEX显示）
@@ -66,7 +66,7 @@
 - [x] 3.5.1 `configureFromSettings()` 中的 dataBits switch 改为复用 `mapDataBits()`
 - [x] 3.5.2 `configureFromSettings()` 中的 stopBits switch 改为复用 `mapStopBits()`
 - [x] 3.5.3 `configureFromSettings()` 中的 parity if-else 链改为复用 `mapParity()`
-- [ ] 3.5.4 验证配置读写一致性
+- [x] 3.5.4 验证配置读写一致性
 
 ### 3.6 SerialPortOperator 重复守卫提取 (#16)
 - [x] 3.6.1 提取 `validatePort(QSerialPort*, QIODevice::OpenMode)` 私有方法，消除 write/read 中的重复 null-check + isOpen 守卫
@@ -78,26 +78,26 @@
 
 ## 4. P1 — 测试基础设施
 
-### 4.1 测试框架搭建 (#18)
-- [ ] 4.1.1 创建 `tests/` 目录和 `tests/CMakeLists.txt`
-- [ ] 4.1.2 在顶层 `CMakeLists.txt` 中添加 `add_subdirectory(tests)`（可选开关）
-- [ ] 4.1.3 编写 StateManager 状态转换测试用例
-- [ ] 4.1.4 编写 ConfigManager 读写和事务测试用例
+### 4.1 测试框架搭建 (#18) — 暂缓
+- [-] 4.1.1 创建 `tests/` 目录和 `tests/CMakeLists.txt`
+- [-] 4.1.2 在顶层 `CMakeLists.txt` 中添加 `add_subdirectory(tests)`（可选开关）
+- [-] 4.1.3 编写 StateManager 状态转换测试用例
+- [-] 4.1.4 编写 ConfigManager 读写和事务测试用例
 
 ## 5. P2 — 架构改进
 
 ### 5.1 LeftBar 封装改进 (#19)
-- [ ] 5.1.1 将 LeftBar 的裸指针 getter 改为信号+方法接口
-- [ ] 5.1.2 添加 `setPortOpen(bool)`、`portName()`、`baudRate()` 等语义化方法
-- [ ] 5.1.3 更新 SerialPortManager::initialize() 使用新接口
+- [x] 5.1.1 将 LeftBar 的裸指针 getter 改为信号+方法接口
+- [x] 5.1.2 添加 `setPortOpen(bool)`、`portName()`、`baudRate()` 等语义化方法
+- [x] 5.1.3 更新 SerialPortManager::initialize() 使用新接口
 
 ### 5.2 SerialPortManager 委托简化 (#20)
-- [ ] 5.2.1 评估是否可以移除纯委托方法，直接通过 `configurator()` / `operator()` 访问器暴露
-- [ ] 5.2.2 保留有业务逻辑的方法（如 `openPort()` 有 emit），移除无逻辑的纯委托
+- [x] 5.2.1 评估是否可以移除纯委托方法，直接通过 `configurator()` / `operator()` 访问器暴露
+- [x] 5.2.2 保留有业务逻辑的方法（如 `openPort()` 有 emit），移除无逻辑的纯委托
 
 ### 5.3 UpdateManager 生命周期 (#21)
-- [ ] 5.3.1 在 `main.cpp` 中创建 UpdateManager 实例或确认其不需要、删除空壳
+- [x] 5.3.1 在 `main.cpp` 中创建 UpdateManager 实例或确认其不需要、删除空壳
 
 ### 5.4 设置页面内容填充或移除
-- [ ] 5.4.1 评估 HelpPage、AccountPage、AboutPage 是否需要保留
-- [ ] 5.4.2 保留则填充内容，不需要则删除文件和 SettingsUI 中的引用
+- [x] 5.4.1 评估 HelpPage、AccountPage、AboutPage 是否需要保留
+- [x] 5.4.2 保留则填充内容，不需要则删除文件和 SettingsUI 中的引用

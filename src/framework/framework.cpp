@@ -37,6 +37,17 @@ Framework::Framework(QWidget *parent)
     // 连接 TitleBar 中的设置按钮信号到切换界面的槽函数
     connect(m_pTitleBar, &TitleBar::settingsButtonClicked, this, &Framework::switchWidget);
 
+    // 创建更新管理器
+    m_pUpdateManager = new UpdateManager(nullptr, this);
+
+    // 连接设置页「检查更新」按钮到更新管理器
+    connect(m_pSettingsUI->systemPage(), &SystemPage::checkUpdateRequested,
+            m_pUpdateManager, &UpdateManager::checkForUpdate);
+
+    // 连接 TX/RX 计数器到 StatusBar
+    connect(m_pBytetraceBase, &BytetraceBase::txRxUpdated,
+            m_pStatusBar, &StatusBar::updateTxRx);
+
     // 连接 ErrorHandler 错误信号到 StatusBar
     connect(&ErrorHandler::instance(), &ErrorHandler::errorOccurred,
             this, [this](const QString& msg, ErrorType, ErrorLevel) {

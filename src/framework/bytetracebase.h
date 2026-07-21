@@ -15,6 +15,7 @@
 #include <QByteArray>
 #include <QTimer>
 #include <QMutex>
+#include <QFile>
 #include <memory>
 #include "leftbar.h"
 #include "recvwidget.h"
@@ -34,6 +35,9 @@ public:
     explicit BytetraceBase(QWidget *parent = nullptr);
     ~BytetraceBase();
 
+signals:
+    void txRxUpdated(qint64 tx, qint64 rx);
+
 private slots:
     void handleOpenCloseSerialPort();
     void onSerialPortError(QSerialPort::SerialPortError error);
@@ -44,11 +48,20 @@ private slots:
     void onTimeout();
     void onTaskCompleted();
     void onTaskFailed();
+    void onTimedSendTimeout();
+    void onDtrToggled();
+    void onRtsToggled();
+    void onFileTransferClicked();
+    void onSaveToFileToggled();
 
 private:
     void connections();
     void updateUI(bool isOpen);
     void sendData(const QByteArray& data);
+    QByteArray buildSendData();
+    QByteArray parseHexString(const QString& hexStr);
+    uint16_t calculateCrc16Modbus(const QByteArray& data);
+    void updateTxRxCounters(qint64 tx, qint64 rx);
     void initTransferAnimation();
     void showTransferAnimation(bool active);
 
@@ -59,9 +72,15 @@ private:
 
     std::shared_ptr<SerialPortManager> m_serialPortManager;
     QTimer* m_portMonitorTimer;
+    QTimer* m_timedSendTimer;
     QMovie* m_transferAnimation;
     QMutex m_serialMutex;
     bool m_isOpen;
+
+    qint64 m_txBytes;
+    qint64 m_rxBytes;
+    QFile m_logFile;
+    bool m_isLogging;
 };
 
 #endif // BYTETRACEBASE_H

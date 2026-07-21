@@ -7,17 +7,15 @@ SettingsUI::SettingsUI(QWidget *parent)
     ui->setupUi(this);
     ui->listWidget->setIconSize(QSize(24, 24));
 
-    m_pAboutPage = new AboutPage;
-    m_pAccountPage = new AccountPage;
+    m_pSystemPage = new SystemPage;
     m_pAppearancePage = new AppearancePage;
     m_pHelpPage = new HelpPage;
-    m_pSystemPage = new SystemPage;
+    m_pAboutPage = new AboutPage;
 
     ui->stackedWidget->insertWidget(0, m_pSystemPage);
-    ui->stackedWidget->insertWidget(1, m_pAccountPage);
-    ui->stackedWidget->insertWidget(2, m_pAppearancePage);
-    ui->stackedWidget->insertWidget(3, m_pHelpPage);
-    ui->stackedWidget->insertWidget(4, m_pAboutPage);
+    ui->stackedWidget->insertWidget(1, m_pAppearancePage);
+    ui->stackedWidget->insertWidget(2, m_pHelpPage);
+    ui->stackedWidget->insertWidget(3, m_pAboutPage);
 
     connect(ui->listWidget, &QListWidget::currentRowChanged, this, &SettingsUI::onCategoryChanged);
 
@@ -31,5 +29,3 @@ void SettingsUI::onCategoryChanged(int index) {
 SettingsUI::~SettingsUI() {
     delete ui;
 }
-
-

@@ -16,6 +16,7 @@ public:
 
 public slots:
     void onRecvMessage(const QString &);
+    void updateTxRx(qint64 tx, qint64 rx);
 
 private:
     Ui::StatusBar *ui;

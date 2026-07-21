@@ -22,51 +22,38 @@ class SerialPortManager : public QObject {
 public:
     explicit SerialPortManager(QObject *parent = nullptr);
     ~SerialPortManager();
-    
-    // UI 初始化和配置方法 - 委托给 SerialPortConfigurator
+
+    // === 子组件访问 ===
+    SerialPortConfigurator& configurator() { return m_configurator; }
+    const SerialPortConfigurator& configurator() const { return m_configurator; }
+
+    // === UI 初始化和配置 ===
     bool initialize(QComboBox *portBox, QComboBox *baudrateBox,
                     QComboBox *databitsBox, QComboBox *parityBox,
                     QComboBox *stopBitsBox, QComboBox *flowControlBox);
 
-    void configureSerialPort(QComboBox *comBoxPortName, QComboBox *comBoxBaudRate,
-                             QComboBox *comBoxDataBits, QComboBox *comBoxParity,
-                             QComboBox *comBoxStopBits, QComboBox *comBoxFlowControl);
+    void configureSerialPort(const QString& portName, int baudRate,
+                             QSerialPort::DataBits dataBits, QSerialPort::Parity parity,
+                             QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControl);
 
-    // 串口操作方法 - 委托给 SerialPortOperator
+    bool configurePort();
+
+    // === 串口操作（有业务逻辑：emit 信号） ===
     bool openPort();
     void closePort();
     bool writeData(const QByteArray &data);
     QByteArray readData();
-    
-    // 从配置管理器加载配置
-    bool configurePort();
 
-    // 状态查询方法
+    // === 状态查询 ===
     bool isOpen() const;
     bool isWritable() const;
     bool isReadable() const;
 
-    // 设置串口参数 - 委托给 SerialPortConfigurator
-    void setPortName(const QString& portName);
-    void setBaudRate(int baudRate);
-    void setDataBits(QSerialPort::DataBits dataBits);
-    void setParity(QSerialPort::Parity parity);
-    void setStopBits(QSerialPort::StopBits stopBits);
-    void setFlowControl(QSerialPort::FlowControl flowControl);
-
-    // 获取串口信息 - 委托给 SerialPortConfigurator
+    // === 常用信息查询（外部调用频率高，保留便捷方法） ===
     QString getPortName() const;
-    int getBaudRate() const;
-    QSerialPort::DataBits getDataBits() const;
-    QSerialPort::Parity getParity() const;
-    QSerialPort::StopBits getStopBits() const;
-    QSerialPort::FlowControl getFlowControl() const;
     QSerialPort::SerialPortError getError() const;
 
-    QString getAvailablePortsInfo() const;
-    bool isValidPort(const QString &portName) const;
-
-    // 启动持续读取
+    // === 持续读取 ===
     void startReading();
 
 signals:
@@ -77,7 +64,7 @@ signals:
     void dataRead(const QByteArray &data);
     void portAdded(const QString &portName);
     void portRemoved(const QString &portName);
-    void serialPortError(QSerialPort::SerialPortError error);  // 统一处理所有错误
+    void serialPortError(QSerialPort::SerialPortError error);
 
 private slots:
     void handleError(QSerialPort::SerialPortError error);

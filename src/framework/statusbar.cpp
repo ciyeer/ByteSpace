@@ -8,10 +8,14 @@ StatusBar::StatusBar(QWidget *parent)
 }
 
 void StatusBar::onRecvMessage(const QString &msg) {
-    // 防止无意义更新
     if (!msg.isEmpty()) {
         ui->labelStatus->setText(msg);
     }
+}
+
+void StatusBar::updateTxRx(qint64 tx, qint64 rx) {
+    ui->label_2->setText(QString::number(tx));
+    ui->label_4->setText(QString::number(rx));
 }
 
 StatusBar::~StatusBar() {

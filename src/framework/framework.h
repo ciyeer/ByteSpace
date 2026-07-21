@@ -17,6 +17,7 @@
 #include "titlebar.h"
 #include "statusbar.h"
 #include <QStackedWidget>
+#include "updatemanager/updatemanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -41,7 +42,8 @@ private:
     BytetraceBase *m_pBytetraceBase;
     SettingsUI *m_pSettingsUI;
     StatusBar *m_pStatusBar;
-    QStackedWidget *m_pStackedWidget; // 添加 QStackedWidget 成员
+    QStackedWidget *m_pStackedWidget;
+    UpdateManager *m_pUpdateManager;
     
 private slots:
     void switchWidget(); // 添加切换界面的槽函数

@@ -20,7 +20,9 @@ class UpdateManager : public QObject {
     Q_OBJECT
 
 public:
-    explicit UpdateManager(QSystemTrayIcon* trayIcon, QObject* parent = nullptr);
+    explicit UpdateManager(QSystemTrayIcon* trayIcon = nullptr, QObject* parent = nullptr);
+
+public slots:
     void checkForUpdate();
 
 private:

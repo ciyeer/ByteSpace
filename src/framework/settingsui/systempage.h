@@ -9,6 +9,9 @@ class SystemPage : public QWidget {
 public:
     explicit SystemPage(QWidget *parent = nullptr);
     ~SystemPage();
+
+signals:
+    void checkUpdateRequested();
 };
 
 #endif // SYSTEMPAGE_H

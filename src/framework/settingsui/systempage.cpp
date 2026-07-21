@@ -48,6 +48,7 @@ SystemPage::SystemPage(QWidget *parent)
     QCheckBox *betaCheck = new QCheckBox("测试版", generalGroup);
     QPushButton *checkUpdateBtn = new QPushButton("检查更新", generalGroup);
     checkUpdateBtn->setFixedWidth(120);
+    connect(checkUpdateBtn, &QPushButton::clicked, this, &SystemPage::checkUpdateRequested);
 
     generalLayout->addLayout(updateLayout);
     generalLayout->addLayout(proxyLayout);
